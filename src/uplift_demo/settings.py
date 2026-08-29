@@ -1,4 +1,5 @@
-from pydantic import BaseSettings
+# BC-001
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class AppSettings(BaseSettings):
@@ -6,5 +7,5 @@ class AppSettings(BaseSettings):
     tax_rate: float = 0.08
     currency: str = "USD"
 
-    class Config:
-        env_prefix = "UPLIFT_"
+    # BC-001, BC-003
+    model_config = SettingsConfigDict(env_prefix="UPLIFT_")
