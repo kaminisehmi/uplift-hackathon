@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools>=42"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "uplift"
+version = "0.1.0"
+description = "Agentic pydantic v1→v2 migration orchestrator"
+requires-python = ">=3.12"
+
+[tool.setuptools.packages.find]
+where = ["src"]

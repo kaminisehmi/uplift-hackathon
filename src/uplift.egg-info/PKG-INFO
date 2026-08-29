@@ -1,0 +1,5 @@
+Metadata-Version: 2.4
+Name: uplift
+Version: 0.1.0
+Summary: Agentic pydantic v1→v2 migration orchestrator
+Requires-Python: >=3.12
