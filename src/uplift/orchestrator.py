@@ -30,6 +30,12 @@ REQUIREMENTS_PATH = Path("requirements.txt")
 SRC_ROOT = Path("src")
 TEST_ROOT = Path("tests")
 
+# UpLift's own package and its unit tests hold the pydantic v1 API patterns as
+# string literals (detection hints, transform rules, fixtures). They must never
+# be scanned or patched — otherwise the tool migrates itself.
+SELF_PACKAGE_ROOT = Path(__file__).resolve().parent
+SELF_EXCLUDE = [SELF_PACKAGE_ROOT, TEST_ROOT / "test_uplift_orchestrator.py"]
+
 
 # ---------------------------------------------------------------------------
 # Stage helpers
@@ -72,7 +78,9 @@ def run_usage_scanner(
         with USAGE_MAP_PATH.open() as fh:
             return json.load(fh)
 
-    usage_map = scan_usages(bc_list, root_dirs=[SRC_ROOT, TEST_ROOT])
+    usage_map = scan_usages(
+        bc_list, root_dirs=[SRC_ROOT, TEST_ROOT], exclude=SELF_EXCLUDE
+    )
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     with USAGE_MAP_PATH.open("w") as fh:
         json.dump(usage_map, fh, indent=2)
