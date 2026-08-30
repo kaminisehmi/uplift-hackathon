@@ -1,89 +1,14 @@
 {
-  "BC-001": [
-    {
-      "file": "src/uplift_demo/settings.py",
-      "line": 1,
-      "snippet": "from pydantic import BaseSettings"
-    }
-  ],
-  "BC-002": [
-    {
-      "file": "src/uplift_demo/models.py",
-      "line": 12,
-      "snippet": "    @validator(\"name\")"
-    },
-    {
-      "file": "src/uplift_demo/models.py",
-      "line": 33,
-      "snippet": "    @validator(\"order_id\")"
-    },
-    {
-      "file": "src/uplift_demo/models.py",
-      "line": 39,
-      "snippet": "    @root_validator"
-    }
-  ],
-  "BC-003": [
-    {
-      "file": "src/uplift_demo/models.py",
-      "line": 22,
-      "snippet": "    class Config:"
-    },
-    {
-      "file": "src/uplift_demo/settings.py",
-      "line": 9,
-      "snippet": "    class Config:"
-    }
-  ],
-  "BC-004": [
-    {
-      "file": "src/uplift_demo/models.py",
-      "line": 9,
-      "snippet": "    email: str = Field(..., regex=r\"^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$\")"
-    },
-    {
-      "file": "src/uplift_demo/models.py",
-      "line": 29,
-      "snippet": "    items: List[OrderItem] = Field(..., min_items=1)"
-    }
-  ],
-  "BC-005": [
-    {
-      "file": "src/uplift_demo/service.py",
-      "line": 10,
-      "snippet": "    return Order.parse_obj(payload)"
-    },
-    {
-      "file": "src/uplift_demo/service.py",
-      "line": 14,
-      "snippet": "    return Order.parse_raw(raw)"
-    },
-    {
-      "file": "src/uplift_demo/service.py",
-      "line": 27,
-      "snippet": "    return order.copy(update={\"discount\": amount})"
-    },
-    {
-      "file": "src/uplift_demo/service.py",
-      "line": 31,
-      "snippet": "    data = order.dict()"
-    },
-    {
-      "file": "src/uplift_demo/service.py",
-      "line": 42,
-      "snippet": "    return order.json()"
-    },
-    {
-      "file": "src/uplift_demo/service.py",
-      "line": 46,
-      "snippet": "    return Order.schema()"
-    }
-  ],
+  "BC-001": [],
+  "BC-002": [],
+  "BC-003": [],
+  "BC-004": [],
+  "BC-005": [],
   "BC-006": [
     {
       "file": "tests/test_models.py",
       "line": 58,
-      "snippet": "    with pytest.raises(TypeError):"
+      "snippet": "    with pytest.raises(ValidationError):  # BC-006: frozen=True raises ValidationError in pydantic v2 (was TypeError in v1)"
     }
   ]
 }

@@ -6,8 +6,11 @@
 **IBM TechXchange 2026 Pre-conference Dev Day Hackathon submission.**
 Built with **IBM Bob IDE** (Plan/Code modes, custom modes as subagents,
 parallel tasks, custom rules, document understanding), with **watsonx.ai
-(IBM Granite (granite-4-h-small))** for inference and a **watsonx Orchestrate** human-approval
-agent.
+(IBM Granite `granite-4-h-small`)** for inference and a **watsonx Orchestrate**
+human-approval agent running live on the hackathon instance.
+See [`orchestrate/README.md`](orchestrate/README.md) for the two hosted-instance
+constraints (model selection is locked to the instance default for Builder-role
+users, and a cloud agent cannot read a local report file).
 
 ## 1. The problem
 

@@ -43,8 +43,7 @@ exports — both were running simultaneously in two Bob chat panels.
 | File | What it shows |
 |------|---------------|
 | `kamini_bob_task_session_evidence_page.png` | Rendered Bob task-session evidence page — every task with its id, workspace and Bobcoin consumption |
-| `kamini_orchestrate_upgrade_approval_agent_live_1.png` | The UpLift **Upgrade Approval Agent** live in watsonx Orchestrate (eu-gb instance), agent builder view |
-| `kamini_orchestrate_upgrade_approval_agent_live_2.png` | Same agent configured with the `upgrade_status` tool and human approve/reject instructions |
+| `kamini_orchestrate_upgrade_approval_agent_live_1.png` | The UpLift **Upgrade Approval Agent** live in watsonx Orchestrate (eu-gb hackathon instance), agent builder view |
 
 The rendered evidence page is generated from the JSON exports and lives at
 `.bob/artifacts/uplift-bob-task-session-evidence.html` — open it in a browser
