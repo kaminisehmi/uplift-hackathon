@@ -1,489 +1,89 @@
 {
   "BC-001": [
     {
-      "file": "src/uplift/analyst.py",
-      "line": 23,
-      "snippet": "        r\"from pydantic import BaseSettings\","
-    },
-    {
-      "file": "src/uplift/migrator.py",
-      "line": 41,
-      "snippet": "    \"\"\"BC-001 \u2014 Replace 'from pydantic import BaseSettings' in settings.py.\"\"\""
-    },
-    {
-      "file": "src/uplift/migrator.py",
-      "line": 45,
-      "snippet": "        r\"from pydantic import BaseSettings\","
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 28,
-      "snippet": "            \"description\": \"from pydantic import BaseSettings raises error in v2\","
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 29,
-      "snippet": "            \"detection_hint\": r\"from pydantic import BaseSettings\","
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 30,
-      "snippet": "            \"old_pattern\": \"from pydantic import BaseSettings\","
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 219,
-      "snippet": "        (src / \"foo.py\").write_text(\"from pydantic import BaseSettings\\n\", encoding=\"utf-8\")"
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 503,
-      "snippet": "            (\"1. `BaseSettings` moved\", \"from pydantic import BaseSettings\","
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 584,
-      "snippet": "            \"from pydantic import BaseSettings\\n\\nclass AppSettings(BaseSettings):\\n    pass\\n\","
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 670,
-      "snippet": "        code = \"from pydantic import BaseSettings  # used here\\n\""
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 712,
-      "snippet": "        src = \"from pydantic import BaseSettings\\n\\nclass AppSettings(BaseSettings):\\n    pass\\n\""
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 715,
-      "snippet": "        assert \"from pydantic import BaseSettings\" not in result"
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 721,
-      "snippet": "            \"from pydantic import BaseSettings\\n\\n\""
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 843,
-      "snippet": "            \"BC-001\": [{\"file\": file_path, \"line\": 1, \"snippet\": \"from pydantic import BaseSettings\"}],"
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 856,
-      "snippet": "            \"from pydantic import BaseSettings\\n\\nclass App(BaseSettings):\\n\""
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 876,
-      "snippet": "        original = \"from pydantic import BaseSettings\\n\""
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 1092,
-      "snippet": "        (src / \"settings.py\").write_text(\"from pydantic import BaseSettings\\n\", encoding=\"utf-8\")"
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 1157,
-      "snippet": "        (src / \"s.py\").write_text(\"from pydantic import BaseSettings\\n\", encoding=\"utf-8\")"
+      "file": "src/uplift_demo/settings.py",
+      "line": 1,
+      "snippet": "from pydantic import BaseSettings"
     }
   ],
   "BC-002": [
     {
-      "file": "src/uplift/analyst.py",
-      "line": 28,
-      "snippet": "        \"Validators renamed (@validator / @root_validator)\","
+      "file": "src/uplift_demo/models.py",
+      "line": 12,
+      "snippet": "    @validator(\"name\")"
     },
     {
-      "file": "src/uplift/analyst.py",
-      "line": 29,
-      "snippet": "        r\"@validator|@root_validator\","
+      "file": "src/uplift_demo/models.py",
+      "line": 33,
+      "snippet": "    @validator(\"order_id\")"
     },
     {
-      "file": "src/uplift/migrator.py",
-      "line": 62,
-      "snippet": "    \"\"\"BC-002 \u2014 Rename @validator / @root_validator.\"\"\""
-    },
-    {
-      "file": "src/uplift/migrator.py",
-      "line": 87,
-      "snippet": "    # Replace @validator(\"field\") with @field_validator(\"field\") + @classmethod"
-    },
-    {
-      "file": "src/uplift/migrator.py",
-      "line": 88,
-      "snippet": "    # Pattern: @validator(<args>) followed by def <name>(cls, ...):"
-    },
-    {
-      "file": "src/uplift/migrator.py",
-      "line": 96,
-      "snippet": "        r\"^( *)@validator\\(([^)]*)\\)\\n\\1(def \\w+.*:)\","
-    },
-    {
-      "file": "src/uplift/migrator.py",
-      "line": 103,
-      "snippet": "    # Replace @root_validator with @model_validator(mode=\"after\")."
-    },
-    {
-      "file": "src/uplift/migrator.py",
-      "line": 113,
-      "snippet": "        r\"^( *)@root_validator\\n\\1(def \\w+.*:)\","
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 37,
-      "snippet": "            \"description\": \"@validator renamed\","
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 38,
-      "snippet": "            \"detection_hint\": r\"@validator|@root_validator\","
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
+      "file": "src/uplift_demo/models.py",
       "line": 39,
-      "snippet": "            \"old_pattern\": \"@validator\","
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 505,
-      "snippet": "            (\"2. Validators renamed\", \"@validator(\\\"field\\\")\", \"@field_validator(\\\"field\\\")\"),"
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 589,
-      "snippet": "            \"@validator('name')\\ndef check_name(cls, v): return v\\n\\n\""
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 590,
-      "snippet": "            \"@root_validator\\ndef check_all(cls, values): return values\\n\\n\""
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 629,
-      "snippet": "        # Should find @validator and @root_validator lines"
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 737,
-      "snippet": "            \"    @validator('name')\\n\""
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 744,
-      "snippet": "        assert \"@validator\" not in result"
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 751,
-      "snippet": "            \"    @root_validator\\n\""
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 757,
-      "snippet": "        assert \"@root_validator\" not in result"
+      "snippet": "    @root_validator"
     }
   ],
   "BC-003": [
     {
-      "file": "src/uplift/analyst.py",
-      "line": 35,
-      "snippet": "        r\"class Config:\","
+      "file": "src/uplift_demo/models.py",
+      "line": 22,
+      "snippet": "    class Config:"
     },
     {
-      "file": "src/uplift/migrator.py",
-      "line": 50,
-      "snippet": "    # Replace class Config: env_prefix = \"X_\" with model_config = SettingsConfigDict(env_prefix=\"X_\")"
-    },
-    {
-      "file": "src/uplift/migrator.py",
-      "line": 51,
-      "snippet": "    # Pattern: optional blank lines, then \"    class Config:\\n        env_prefix = \"...\""
-    },
-    {
-      "file": "src/uplift/migrator.py",
-      "line": 53,
-      "snippet": "        r\"\\n\\s{4}class Config:\\s*\\n\\s{8}env_prefix\\s*=\\s*(['\\\"])(.*?)\\1\","
-    },
-    {
-      "file": "src/uplift/migrator.py",
-      "line": 156,
-      "snippet": "    #     class Config:"
-    },
-    {
-      "file": "src/uplift/migrator.py",
-      "line": 161,
-      "snippet": "        r\"\\n( {4})class Config:\\s*\\n\\1    allow_mutation\\s*=\\s*False\","
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 47,
-      "snippet": "            \"detection_hint\": r\"class Config:\","
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 48,
-      "snippet": "            \"old_pattern\": \"class Config:\","
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 506,
-      "snippet": "            (\"3. `class Config` \u2192 `model_config`\", \"class Config:\", \"model_config = ConfigDict(...)\"),"
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 591,
-      "snippet": "            \"class Config:\\n    allow_mutation = False\\n\","
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 724,
-      "snippet": "            \"    class Config:\\n\""
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 729,
-      "snippet": "        assert \"class Config:\" not in result"
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 774,
-      "snippet": "            \"    class Config:\\n\""
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 779,
-      "snippet": "        assert \"class Config:\" not in result"
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 784,
-      "snippet": "        src = \"from pydantic import BaseModel\\n\\nclass M(BaseModel):\\n    class Config:\\n        allow_mutation = False\\n\""
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 857,
-      "snippet": "            \"    x: str = 'a'\\n\\n    class Config:\\n        env_prefix = 'X_'\\n\","
+      "file": "src/uplift_demo/settings.py",
+      "line": 9,
+      "snippet": "    class Config:"
     }
   ],
   "BC-004": [
     {
-      "file": "src/uplift/analyst.py",
-      "line": 41,
-      "snippet": "        r\"regex=|min_items=|max_items=|const=\","
+      "file": "src/uplift_demo/models.py",
+      "line": 9,
+      "snippet": "    email: str = Field(..., regex=r\"^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$\")"
     },
     {
-      "file": "src/uplift/migrator.py",
-      "line": 174,
-      "snippet": "        (r\"\\bregex=\", \"pattern=\"),"
-    },
-    {
-      "file": "src/uplift/migrator.py",
-      "line": 175,
-      "snippet": "        (r\"\\bmin_items=\", \"min_length=\"),"
-    },
-    {
-      "file": "src/uplift/migrator.py",
-      "line": 176,
-      "snippet": "        (r\"\\bmax_items=\", \"max_length=\"),"
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 55,
-      "snippet": "            \"description\": \"regex= \u2192 pattern=\","
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 56,
-      "snippet": "            \"detection_hint\": r\"regex=|min_items=\","
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 57,
-      "snippet": "            \"old_pattern\": \"regex=\","
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 507,
-      "snippet": "            (\"4. `Field` keyword changes\", \"regex=r\\\"pattern\\\"\", \"pattern=r\\\"pattern\\\"\"),"
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 791,
-      "snippet": "        src = \"email: str = Field(..., regex=r'^[^@]+@[^@]+$')\\n\""
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 794,
-      "snippet": "        assert \"regex=\" not in result"
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 799,
-      "snippet": "        src = \"items: List[Item] = Field(..., min_items=1)\\n\""
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 802,
-      "snippet": "        assert \"min_items=\" not in result"
+      "file": "src/uplift_demo/models.py",
+      "line": 29,
+      "snippet": "    items: List[OrderItem] = Field(..., min_items=1)"
     }
   ],
   "BC-005": [
     {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 64,
-      "snippet": "            \"description\": \".dict() \u2192 .model_dump()\","
+      "file": "src/uplift_demo/service.py",
+      "line": 10,
+      "snippet": "    return Order.parse_obj(payload)"
     },
     {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 66,
-      "snippet": "            \"old_pattern\": \".dict()\","
+      "file": "src/uplift_demo/service.py",
+      "line": 14,
+      "snippet": "    return Order.parse_raw(raw)"
     },
     {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 508,
-      "snippet": "            (\"5. Renamed model methods\", \".dict()\", \".model_dump()\"),"
+      "file": "src/uplift_demo/service.py",
+      "line": 27,
+      "snippet": "    return order.copy(update={\"discount\": amount})"
     },
     {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 595,
-      "snippet": "            \"def export(order):\\n    return order.dict()\\n\","
+      "file": "src/uplift_demo/service.py",
+      "line": 31,
+      "snippet": "    data = order.dict()"
     },
     {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 807,
-      "snippet": "        src = \"data = order.dict()\\n\""
+      "file": "src/uplift_demo/service.py",
+      "line": 42,
+      "snippet": "    return order.json()"
     },
     {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 810,
-      "snippet": "        assert \".dict()\" not in result"
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 815,
-      "snippet": "        src = \"order = Order.parse_obj(payload)\\n\""
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 818,
-      "snippet": "        assert \".parse_obj(\" not in result"
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 822,
-      "snippet": "        src = \"return order.json()\\n\""
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 835,
-      "snippet": "        src = \"schema = Order.schema()\\n\""
+      "file": "src/uplift_demo/service.py",
+      "line": 46,
+      "snippet": "    return Order.schema()"
     }
   ],
   "BC-006": [
     {
-      "file": "src/uplift/analyst.py",
-      "line": 53,
-      "snippet": "        r\"pytest\\.raises\\(TypeError\\)|TypeError\","
-    },
-    {
-      "file": "src/uplift/migrator.py",
-      "line": 323,
-      "snippet": "                \"reason\": \"Behavioral change: TypeError \u2192 ValidationError (frozen model)\","
-    },
-    {
-      "file": "src/uplift/verifier.py",
-      "line": 48,
-      "snippet": "    \"\"\"Apply BC-006 fix: replace TypeError with ValidationError in test files."
-    },
-    {
-      "file": "src/uplift/verifier.py",
-      "line": 73,
-      "snippet": "        # Replace pytest.raises(TypeError) with pytest.raises(ValidationError)"
-    },
-    {
-      "file": "src/uplift/verifier.py",
-      "line": 75,
-      "snippet": "            r\"pytest\\.raises\\(TypeError\\)\","
-    },
-    {
       "file": "tests/test_models.py",
       "line": 58,
-      "snippet": "    with pytest.raises(ValidationError):  # BC-006: frozen=True raises ValidationError in pydantic v2 (was TypeError in v1)"
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 74,
-      "snippet": "            \"detection_hint\": r\"pytest\\.raises\\(TypeError\\)\","
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 75,
-      "snippet": "            \"old_pattern\": \"TypeError\","
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 256,
-      "snippet": "                \"reason\": \"TypeError \u2192 ValidationError\","
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 356,
-      "snippet": "            \"    with pytest.raises(TypeError):\\n\""
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 374,
-      "snippet": "        assert \"pytest.raises(TypeError)\" not in result"
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 381,
-      "snippet": "        original = \"with pytest.raises(TypeError):\\n    pass\\n\""
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 422,
-      "snippet": "                    \"reason\": \"TypeError \u2192 ValidationError\","
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 509,
-      "snippet": "            (\"6. Behavioral changes\", \"TypeError\", \"ValidationError\"),"
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 601,
-      "snippet": "            \"def test_immutable():\\n    with pytest.raises(TypeError):\\n        obj.x = 1\\n\","
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 893,
-      "snippet": "        test_file.write_text(\"with pytest.raises(TypeError):\\n    pass\\n\", encoding=\"utf-8\")"
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 897,
-      "snippet": "        usage_map[\"BC-006\"] = [{\"file\": file_path, \"line\": 1, \"snippet\": \"pytest.raises(TypeError)\"}]"
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 910,
-      "snippet": "        assert test_file.read_text(encoding=\"utf-8\") == \"with pytest.raises(TypeError):\\n    pass\\n\""
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 951,
-      "snippet": "        usage_map = {\"BC-006\": [{\"file\": \"tests/test_models.py\", \"line\": 58, \"snippet\": \"TypeError\"}]}"
-    },
-    {
-      "file": "tests/test_uplift_orchestrator.py",
-      "line": 960,
-      "snippet": "            \"reason\": \"Behavioral change: TypeError \u2192 ValidationError (frozen model)\","
+      "snippet": "    with pytest.raises(TypeError):"
     }
   ]
 }
