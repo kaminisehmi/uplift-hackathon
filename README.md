@@ -92,7 +92,7 @@ pip install "pydantic>=2" pydantic-settings
 python -m pytest                          # failures across multiple files
 
 # 3. UpLift takes over
-python -m uplift upgrade pydantic         # agent crew: ~<1 hr, <7 Bobcoins
+python -m uplift upgrade pydantic         # full pipeline replays in < 1 second
 
 # 4. Verify
 python -m pytest                          # 77 passed, 0 failed
@@ -105,7 +105,7 @@ cat UPGRADE_REPORT.md
 
 | Metric | Manual (typical) | UpLift |
 |---|---|---|
-| pydantic v1→v2 migration for this service | ~1–2 days per service | **< 1 hour agent time, < 7 Bobcoins** |
+| pydantic v1→v2 migration for this service | ~1–2 days per service | **< 1 hour agent time, < 7 Bobcoins to build; CLI replays it in < 1 second per repo** |
 | Breaking changes extracted from migration guide | Manual reading | **6 / 6 extracted (BC-001 – BC-006)** |
 | Usage sites found across `src/` + `tests/` | Manual grep | **15 sites found automatically** |
 | Source files patched | Manual edits | **4 files patched in parallel by 2 migrators** |
