@@ -5,3 +5,6 @@ __pycache__/
 .env
 *.pyc
 .DS_Store
+
+# Never commit Bob task exports without scanning them for secrets first —
+# exports contain the full session log, which can include env values.
