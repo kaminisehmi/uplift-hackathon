@@ -264,6 +264,45 @@
   @keyframes spin { to { transform: rotate(360deg); } }
 
   .loading-msg { color: var(--muted); font-size: 13px; padding: 32px 0; text-align:center; }
+
+  /* ── run migration panel ── */
+  .migrate-btn {
+    background: #16a34a;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 22px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    margin-right: 10px;
+  }
+  .migrate-btn:hover { opacity: 0.85; }
+  .migrate-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .terminal-panel {
+    display: none;
+    margin-top: 16px;
+    background: #0a0c12;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+    font-size: 12px;
+    color: #b0f0b0;
+    line-height: 1.55;
+    max-height: 420px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+  .terminal-panel.visible { display: block; }
+  .terminal-panel .term-line-muted { color: var(--muted); }
+  .terminal-panel .term-line-analyst { color: #facc15; }
+  .terminal-panel .term-line-scanner { color: #38bdf8; }
+  .terminal-panel .term-line-migrator { color: #c084fc; }
+  .terminal-panel .term-line-verifier { color: #4ade80; }
+  .terminal-panel .term-line-error { color: #f87171; }
 </style>
 </head>
 <body>
@@ -340,8 +379,16 @@
       </div>
     </div>
 
+    <!-- run migration -->
+    <div class="section-title" style="margin-top:28px;">Live Migration Runner</div>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:14px;">
+      Runs <code>python -m uplift upgrade pydantic --force</code> — regenerates reports from scratch and streams every pipeline stage live.
+    </p>
+    <button class="migrate-btn" id="migrate-btn" onclick="runMigration()">⚡ Run migration (--force)</button>
+    <div class="terminal-panel" id="terminal-panel"></div>
+
     <!-- test attempts -->
-    <div class="section-title">Verifier Attempts</div>
+    <div class="section-title" style="margin-top:28px;">Verifier Attempts</div>
     <div id="attempts-section"><div class="loading-msg">Loading…</div></div>
 
     <!-- files modified -->
@@ -567,6 +614,93 @@ function runTests() {
 // ── util ───────────────────────────────────────────────────────────────────
 function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── Live migration runner ─────────────────────────────────────────────────
+function runMigration() {
+  const btn = document.getElementById('migrate-btn');
+  const panel = document.getElementById('terminal-panel');
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Running…';
+  panel.innerHTML = '';
+  panel.classList.add('visible');
+
+  fetch('/api/run-migration', { method: 'POST' })
+    .then(resp => {
+      if (resp.status === 409) {
+        appendLine(panel, '[dashboard] Another migration is already running. Please wait.', 'error');
+        return null;
+      }
+      if (!resp.ok) {
+        appendLine(panel, `[dashboard] Server error: ${resp.status}`, 'error');
+        return null;
+      }
+      return readStream(resp, panel);
+    })
+    .then(done => {
+      if (done !== null) {
+        appendLine(panel, '[dashboard] Migration complete — refreshing reports…', 'muted');
+        // Reload all report widgets so judges see updated data
+        return Promise.all([
+          api('/api/upgrade-report'),
+          api('/api/breaking-changes'),
+          api('/api/usage-map'),
+          api('/api/upgrade-report-md'),
+        ]).then(([report, bcs, usageMap, md]) => {
+          buildOverview(report);
+          buildBreaking(bcs);
+          buildUsage(usageMap);
+          buildReport(md);
+          appendLine(panel, '[dashboard] Widgets refreshed.', 'muted');
+        }).catch(err => {
+          appendLine(panel, `[dashboard] Refresh failed: ${err}`, 'error');
+        });
+      }
+    })
+    .catch(err => {
+      appendLine(panel, `[dashboard] Fetch error: ${err}`, 'error');
+    })
+    .finally(() => {
+      btn.disabled = false;
+      btn.innerHTML = '⚡ Run migration (--force)';
+    });
+}
+
+function readStream(resp, panel) {
+  const reader = resp.body.getReader();
+  const decoder = new TextDecoder();
+  let buf = '';
+
+  function pump() {
+    return reader.read().then(({ done, value }) => {
+      if (done) return;
+      buf += decoder.decode(value, { stream: true });
+      const lines = buf.split('\n');
+      buf = lines.pop(); // keep incomplete last line in buffer
+      for (const line of lines) {
+        if (line.trim()) appendLine(panel, line);
+      }
+      return pump();
+    });
+  }
+  return pump();
+}
+
+function appendLine(panel, text, forceClass) {
+  const div = document.createElement('div');
+  let cls = forceClass || '';
+  if (!cls) {
+    if (text.startsWith('[analyst]'))  cls = 'analyst';
+    else if (text.startsWith('[scanner]')) cls = 'scanner';
+    else if (text.startsWith('[migrator')) cls = 'migrator';
+    else if (text.startsWith('[verifier]')) cls = 'verifier';
+    else if (text.startsWith('[error]') || text.includes('Error') || text.includes('FAILED')) cls = 'error';
+  }
+  if (cls) div.className = `term-line-${cls}`;
+  div.textContent = text;
+  panel.appendChild(div);
+  panel.scrollTop = panel.scrollHeight;
 }
 
 // ── bootstrap — load all data in parallel ─────────────────────────────────

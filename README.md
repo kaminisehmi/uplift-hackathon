@@ -112,6 +112,16 @@ cat UPGRADE_REPORT.md
 | Predicted test failures auto-fixed | — | **1 (BC-006 `TypeError` → `ValidationError`)** |
 | Final test suite | Broken until fixed | **77 / 77 green on attempt 2** |
 
+## 7. Roadmap: library-agnostic by design
+
+Nothing in the pipeline is pydantic-specific: the analyst reads *any*
+human-written migration guide, the scanner matches *any* detection hints, and
+the migrators apply *any* old→new pattern pairs. The same recipe-free flow
+applies directly to the next migrations teams dread — **SQLAlchemy 1.x→2.0**,
+**NumPy 1→2**, **Django major upgrades** — by dropping the library's own
+migration guide into `docs/` and running `python -m uplift upgrade <library>
+--force`. One agent crew, every upgrade.
+
 ## Setup
 
 ```bash
