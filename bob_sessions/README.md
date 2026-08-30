@@ -22,9 +22,9 @@ consumption summary panel.
 | 4d | `kamini_task04d_migrator_b_settings_service_summary.json` | Code Migrator B (settings.py + service.py + requirements.txt) — ran in parallel with 4c | 0.146 |
 | 4e | `kamini_task04e_verifier_green_summary.json` | Verifier mode — BC-006 fix, 77/77 green | 0.431 |
 | 5 | `kamini_task05_orchestrate_granite_summary.json` | watsonx Orchestrate ADK + Granite integration | 0.519 |
-| 6 | `kamini_task06_final_readme_summary.json` | Final README with measured impact | 0.265 |
+| 6 | `kamini_task06_final_readme_and_dashboard_summary.json` | Final README + self-contained live dashboard | 2.38 |
 
-**Total: ≈6.63 Bobcoins of the 40 allocated (≈17%).**
+**Total: ≈8.75 Bobcoins of the 40 allocated (≈22%)** — including a follow-up demo-polish task (--force live pipeline + streaming dashboard runner).
 
 Parallel-task evidence: tasks 4c and 4d carry overlapping timestamps in their
 exports — both were running simultaneously in two Bob chat panels.
