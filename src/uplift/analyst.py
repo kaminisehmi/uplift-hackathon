@@ -44,7 +44,8 @@ _BC_META: list[tuple[str, str, str, float]] = [
     (
         "BC-005",
         "Renamed model methods (.dict, .json, .copy, .schema, .parse_obj, .parse_raw)",
-        r"\.(dict|json|copy|schema)\(\)|\.parse_obj\(|\.parse_raw\(",
+        # Match calls with or without arguments: .copy(update=...) counts too.
+        r"\.(dict|json|copy|schema|parse_obj|parse_raw)\(",
         0.95,
     ),
     (
