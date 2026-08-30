@@ -96,7 +96,12 @@ def _run_single_migrator(
     assigned_files: set[str],
 ) -> list[dict[str, Any]]:
     changes = apply_migrations(usage_map, bc_list, assigned_files)
-    print(f"[migrator-{label}] Applied {len(changes)} changes")
+    applied = sum(1 for c in changes if c.get("applied"))
+    flagged = len(changes) - applied
+    summary = f"[migrator-{label}] Applied {applied} changes"
+    if flagged:
+        summary += f" ({flagged} flagged for human review)"
+    print(summary)
     return changes
 
 
@@ -172,6 +177,16 @@ def upgrade(library: str, force: bool = False) -> bool:
     needs_human_review: list[dict[str, Any]] = [
         c for c in changes if c.get("needs_human_review")
     ]
+
+    # Nothing was applied and a report already exists: the target is already
+    # migrated. Writing now would replace a real report with an empty one, so
+    # stop before Stage 5 and leave the existing artifact alone.
+    if not any(c.get("applied") for c in changes) and UPGRADE_REPORT_PATH.exists():
+        print(
+            f"[uplift] Nothing to migrate — {library} usage is already on the "
+            f"target version. Left {UPGRADE_REPORT_PATH} untouched."
+        )
+        return True
 
     # Stage 4 — verifier with retry
     passed, test_runs = run_verifier(changes, needs_human_review, max_retries=2)

@@ -38,10 +38,10 @@
   {
     "id": "BC-005",
     "title": "Renamed model methods (.dict, .json, .copy, .schema, .parse_obj, .parse_raw)",
-    "description": "The v1 methods still exist in v2 but emit `PydanticDeprecatedSince20` warnings and will be removed. Migrate to the new names: `Model.parse_obj(d)` → `Model.model_validate(d)`; `Model.parse_raw(s)` → `Model.model_validate_json(s)`; `m.dict()` → `m.model_dump()`; `m.json()` → `m.model_dump_json()`; `m.copy(update=...)` → `m.model_copy(update=...)`; `Model.schema()` → `Model.model_json_schema()`; `Model.construct()` → `Model.model_construct()`; `m.__fields__` → `Model.model_fields`.",
-    "old_pattern": "m.dict() / m.json() / m.copy() / Model.schema() / Model.parse_obj() / Model.parse_raw() / Model.construct() / m.__fields__",
-    "new_pattern": "m.model_dump() / m.model_dump_json() / m.model_copy() / Model.model_json_schema() / Model.model_validate() / Model.model_validate_json() / Model.model_construct() / Model.model_fields",
-    "detection_hint": "\\.(dict|json|copy|schema|parse_obj|parse_raw|construct)\\s*\\(|\\.__fields__\\b",
+    "description": "The v1 methods still exist in v2 but emit `PydanticDeprecatedSince20` warnings and will be removed; migrate to the new names:",
+    "detection_hint": "\\.(dict|json|copy|schema|parse_obj|parse_raw)\\(",
+    "old_pattern": "",
+    "new_pattern": "",
     "confidence_required": 0.95
   },
   {

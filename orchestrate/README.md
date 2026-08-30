@@ -226,3 +226,31 @@ Please export WATSONX_APIKEY, WATSONX_PROJECT_ID, and WATSONX_URL …
 
 Credentials are **never** hardcoded. They are read exclusively from environment
 variables as required by the UpLift project conventions.
+
+---
+
+## Hosted-instance notes (hackathon environment)
+
+Two constraints of the hackathon-provisioned Orchestrate instance are worth
+stating plainly, because they differ from the ADK definition in this folder:
+
+**1. Model selection is locked.** `upgrade_approval_agent.yaml` declares
+`ibm/granite-4-h-small` on the watsonx provider. The hosted instance reports
+*"Model selection is turned off. Admins can enable model selection in
+settings"* for the Builder role every hackathon participant is assigned, so
+the UI-built agent runs the instance default. IBM Granite is used where we
+control inference: `granite_summarizer.py` calls `ibm/granite-4-h-small` on
+watsonx.ai directly.
+
+**2. The tool cannot reach a developer laptop.** `upgrade_status_tool.py`
+reads `reports/upgrade-report.json` from the local filesystem — correct for
+the ADK/self-hosted path, impossible for a cloud-hosted agent. In the hosted
+demo the agent is therefore given the report contents in its instructions,
+verbatim from `reports/upgrade-report.json`, with an explicit rule never to
+state figures outside that block.
+
+This matters because the agent has no other grounding: an earlier hosted
+build with no tool and no report data produced a confident, entirely
+fabricated summary (it invented "≈4,300 tests"). The report block is what
+makes the hosted agent's answers match `UPGRADE_REPORT.md` exactly —
+86 passed, BC-001–BC-005 applied, BC-006 flagged for human review.
