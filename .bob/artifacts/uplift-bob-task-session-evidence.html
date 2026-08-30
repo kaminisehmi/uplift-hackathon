@@ -1,0 +1,301 @@
+
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>UpLift — Bob Task Session Evidence</title>
+<style>
+  body{font-family:-apple-system,"Segoe UI",system-ui,sans-serif;background:#070b14;color:#e8ecf4;margin:0;padding:32px 24px;font-size:13px;line-height:1.6;}
+  .wrap{max-width:900px;margin:0 auto;}
+  h1{font-size:22px;font-weight:800;letter-spacing:-0.5px;margin-bottom:4px;background:linear-gradient(135deg,#818cf8,#a855f7,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .sub{color:#6b7a99;font-size:12px;margin-bottom:28px;}
+  .summary-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px;}
+  .sum-card{background:#0e1420;border:1px solid #1e2d47;border-radius:12px;padding:16px 18px;text-align:center;}
+  .sum-card .val{font-size:28px;font-weight:900;letter-spacing:-1px;line-height:1;}
+  .sum-card .lbl{font-size:10px;color:#6b7a99;text-transform:uppercase;letter-spacing:0.8px;margin-top:5px;}
+  .task-card{background:#0e1420;border:1px solid #1e2d47;border-radius:12px;padding:18px 20px;margin-bottom:12px;border-left:3px solid var(--mc,#6366f1);}
+  .task-header{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px;}
+  .task-num{font-size:10px;font-weight:800;color:var(--mc,#6366f1);letter-spacing:1px;white-space:nowrap;padding-top:2px;}
+  .task-title{font-size:13px;font-weight:600;color:#e8ecf4;flex:1;line-height:1.4;}
+  .task-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+  .pill{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;padding:2px 9px;border-radius:20px;border:1px solid;white-space:nowrap;}
+  .pill-mode{background:rgba(99,102,241,0.1);color:#818cf8;border-color:rgba(99,102,241,0.25);}
+  .pill-msgs{background:rgba(6,182,212,0.08);color:#38bdf8;border-color:rgba(6,182,212,0.2);}
+  .pill-todos{background:rgba(16,217,138,0.08);color:#10d98a;border-color:rgba(16,217,138,0.2);}
+  .pill-tokens{background:rgba(245,158,11,0.08);color:#f59e0b;border-color:rgba(245,158,11,0.2);}
+  .cost-row{display:flex;align-items:center;gap:10px;}
+  .cost-bar-wrap{flex:1;background:#151d2e;border-radius:4px;height:8px;overflow:hidden;}
+  .cost-bar{height:8px;border-radius:4px;background:var(--mc,#6366f1);opacity:0.85;}
+  .cost-val{font-size:13px;font-weight:800;color:var(--mc,#6366f1);min-width:64px;text-align:right;letter-spacing:-0.3px;}
+  .task-prompt{font-size:11px;color:#4a5568;margin-top:8px;font-family:"SF Mono",monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
+  .parallel-badge{background:rgba(168,85,247,0.12);color:#a855f7;border:1px solid rgba(168,85,247,0.25);font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;margin-left:8px;}
+  .ibm-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;}
+  .ibm-card{background:#0e1420;border:1px solid #1e2d47;border-radius:10px;padding:14px 16px;flex:1;min-width:200px;}
+  .ibm-card .ic-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:#6b7a99;margin-bottom:6px;}
+  .ibm-card .ic-val{font-size:13px;font-weight:600;color:#e8ecf4;}
+  .ibm-card .ic-sub{font-size:11px;color:#6b7a99;margin-top:3px;}
+  code{font-family:"SF Mono",monospace;font-size:11px;background:#151d2e;border:1px solid #1e2d47;border-radius:4px;padding:1px 5px;color:#94a3b8;}
+  .section-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:#6b7a99;margin:24px 0 12px;display:flex;align-items:center;gap:8px;}
+  .section-title::after{content:'';flex:1;height:1px;background:#1e2d47;}
+  footer{text-align:center;color:#1e2d47;font-size:11px;margin-top:36px;padding-top:16px;border-top:1px solid #1e2d35;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>UpLift — Bob Task Session Evidence</h1>
+  <div class="sub">IBM TechXchange 2026 Hackathon · ibm-coding-challenge-uat (us-east) · Generated from JSON exports</div>
+
+  
+  <div class="summary-row">
+    <div class="sum-card">
+      <div class="val" style="color:#10d98a">10.88</div>
+      <div class="lbl">Bobcoins used</div>
+    </div>
+    <div class="sum-card">
+      <div class="val" style="color:#818cf8">11</div>
+      <div class="lbl">Tasks completed</div>
+    </div>
+    <div class="sum-card">
+      <div class="val" style="color:#38bdf8">399</div>
+      <div class="lbl">Total messages</div>
+    </div>
+    <div class="sum-card">
+      <div class="val" style="color:#f59e0b">86</div>
+      <div class="lbl">Tests passing</div>
+    </div>
+  </div>
+
+  
+  <div class="section-title">IBM Technology Used</div>
+  <div class="ibm-row">
+    <div class="ibm-card">
+      <div class="ic-title">IBM Bob IDE</div>
+      <div class="ic-val">ibm-coding-challenge-uat</div>
+      <div class="ic-sub">Plan mode · Agent mode · 4 custom modes · parallel tasks · custom rules · skills</div>
+    </div>
+    <div class="ibm-card">
+      <div class="ic-title">watsonx.ai · Granite</div>
+      <div class="ic-val">ibm/granite-4-h-small</div>
+      <div class="ic-sub">Live inference: reads migration-guide.md, extracts 6 breaking changes with confidence levels</div>
+    </div>
+    <div class="ibm-card">
+      <div class="ic-title">watsonx Orchestrate</div>
+      <div class="ic-val">Upgrade Approval Agent</div>
+      <div class="ic-sub">Human approve/reject gate before merge · reads upgrade-report.json via ADK tool</div>
+    </div>
+  </div>
+
+  
+  <div class="section-title">Task Sessions</div>
+
+  <div class="task-card" style="--mc:#6b7a99">
+    <div class="task-header">
+      <span class="task-num">TASK 00</span>
+      <span class="task-title">/init — project context seeding</span>
+    </div>
+    <div class="task-meta">
+      <span class="pill pill-mode">agent mode</span>
+      <span class="pill pill-msgs">35 messages</span>
+      <span class="pill pill-todos">6/6 todos done</span>
+      <span class="pill pill-tokens">29,867 ctx tokens</span>
+    </div>
+    <div class="cost-row">
+      <div class="cost-bar-wrap"><div class="cost-bar" style="width:5%"></div></div>
+      <div class="cost-val">0.527 coins</div>
+    </div>
+    <div class="task-prompt">Seeded AGENTS.md, stack detection, coding rules, Bob instance config</div>
+  </div>
+
+  <div class="task-card" style="--mc:#06b6d4">
+    <div class="task-header">
+      <span class="task-num">TASK 01</span>
+      <span class="task-title">Plan mode — architecture design, JSON contracts, mode permission model</span>
+    </div>
+    <div class="task-meta">
+      <span class="pill pill-mode">plan mode</span>
+      <span class="pill pill-msgs">15 messages</span>
+      <span class="pill pill-tokens">37,564 ctx tokens</span>
+    </div>
+    <div class="cost-row">
+      <div class="cost-bar-wrap"><div class="cost-bar" style="width:4%"></div></div>
+      <div class="cost-val">0.412 coins</div>
+    </div>
+    <div class="task-prompt">4-mode architecture · breaking-changes.json / usage-map.json / upgrade-report.json contracts</div>
+  </div>
+
+  <div class="task-card" style="--mc:#f59e0b">
+    <div class="task-header">
+      <span class="task-num">TASK 02</span>
+      <span class="task-title">Four custom modes + project rules — changelog-analyst, usage-scanner, code-migrator, verifier</span>
+    </div>
+    <div class="task-meta">
+      <span class="pill pill-mode">agent mode</span>
+      <span class="pill pill-msgs">57 messages</span>
+      <span class="pill pill-todos">3/3 todos done</span>
+      <span class="pill pill-tokens">49,927 ctx tokens</span>
+    </div>
+    <div class="cost-row">
+      <div class="cost-bar-wrap"><div class="cost-bar" style="width:16%"></div></div>
+      <div class="cost-val">1.709 coins</div>
+    </div>
+    <div class="task-prompt">custom_modes.yaml · file-regex-restricted permissions · 90%-confidence rule · BC-ID citation rule</div>
+  </div>
+
+  <div class="task-card" style="--mc:#818cf8">
+    <div class="task-header">
+      <span class="task-num">TASK 03</span>
+      <span class="task-title">UpLift orchestrator — CLI, pipeline stages, 61 unit tests</span>
+    </div>
+    <div class="task-meta">
+      <span class="pill pill-mode">agent mode</span>
+      <span class="pill pill-msgs">56 messages</span>
+      <span class="pill pill-todos">5/5 todos done</span>
+      <span class="pill pill-tokens">60,618 ctx tokens</span>
+    </div>
+    <div class="cost-row">
+      <div class="cost-bar-wrap"><div class="cost-bar" style="width:21%"></div></div>
+      <div class="cost-val">2.262 coins</div>
+    </div>
+    <div class="task-prompt">src/uplift/ · analyst · scanner · migrator · verifier · upgrade-report.json · UPGRADE_REPORT.md</div>
+  </div>
+
+  <div class="task-card" style="--mc:#f59e0b">
+    <div class="task-header">
+      <span class="task-num">TASK 04a</span>
+      <span class="task-title">changelog-analyst mode — reads migration-guide.md → breaking-changes.json (BC-001..BC-006)</span>
+    </div>
+    <div class="task-meta">
+      <span class="pill pill-mode">changelog-analyst mode</span>
+      <span class="pill pill-msgs">12 messages</span>
+      <span class="pill pill-tokens">24,814 ctx tokens</span>
+    </div>
+    <div class="cost-row">
+      <div class="cost-bar-wrap"><div class="cost-bar" style="width:2%"></div></div>
+      <div class="cost-val">0.183 coins</div>
+    </div>
+    <div class="task-prompt">Read-only on docs/ · extracted 6 entries · detection hints · confidence levels</div>
+  </div>
+
+  <div class="task-card" style="--mc:#a855f7">
+    <div class="task-header">
+      <span class="task-num">TASK 04c</span>
+      <span class="task-title">code-migrator A — models.py (BC-002 validators, BC-003 Config, BC-004 Field)</span>
+      <span class="parallel-badge">‖ parallel</span>
+    </div>
+    <div class="task-meta">
+      <span class="pill pill-mode">code-migrator mode</span>
+      <span class="pill pill-msgs">15 messages</span>
+      <span class="pill pill-tokens">19,752 ctx tokens</span>
+    </div>
+    <div class="cost-row">
+      <div class="cost-bar-wrap"><div class="cost-bar" style="width:2%"></div></div>
+      <div class="cost-val">0.180 coins</div>
+    </div>
+    <div class="task-prompt">Ran simultaneously with Task 04d · src/ write-only · no test edits</div>
+  </div>
+
+  <div class="task-card" style="--mc:#6366f1">
+    <div class="task-header">
+      <span class="task-num">TASK 04d</span>
+      <span class="task-title">code-migrator B — settings.py, service.py, requirements.txt (BC-001, BC-003, BC-005)</span>
+      <span class="parallel-badge">‖ parallel</span>
+    </div>
+    <div class="task-meta">
+      <span class="pill pill-mode">code-migrator mode</span>
+      <span class="pill pill-msgs">17 messages</span>
+      <span class="pill pill-tokens">17,676 ctx tokens</span>
+    </div>
+    <div class="cost-row">
+      <div class="cost-bar-wrap"><div class="cost-bar" style="width:1%"></div></div>
+      <div class="cost-val">0.146 coins</div>
+    </div>
+    <div class="task-prompt">Ran simultaneously with Task 04c · BaseSettings → pydantic-settings · .dict() → .model_dump()</div>
+  </div>
+
+  <div class="task-card" style="--mc:#10d98a">
+    <div class="task-header">
+      <span class="task-num">TASK 04e</span>
+      <span class="task-title">verifier mode — pytest loop, BC-006 TypeError→ValidationError fix, 77/77 green</span>
+    </div>
+    <div class="task-meta">
+      <span class="pill pill-mode">verifier mode</span>
+      <span class="pill pill-msgs">25 messages</span>
+      <span class="pill pill-tokens">28,102 ctx tokens</span>
+    </div>
+    <div class="cost-row">
+      <div class="cost-bar-wrap"><div class="cost-bar" style="width:4%"></div></div>
+      <div class="cost-val">0.431 coins</div>
+    </div>
+    <div class="task-prompt">tests/ write-only · attempt 1 failed (1 failure) · BC-006 auto-fixed · attempt 2: 77/77 ✅</div>
+  </div>
+
+  <div class="task-card" style="--mc:#38bdf8">
+    <div class="task-header">
+      <span class="task-num">TASK 05</span>
+      <span class="task-title">watsonx Orchestrate ADK + Granite summarizer integration</span>
+    </div>
+    <div class="task-meta">
+      <span class="pill pill-mode">agent mode</span>
+      <span class="pill pill-msgs">28 messages</span>
+      <span class="pill pill-todos">9/9 todos done</span>
+      <span class="pill pill-tokens">26,235 ctx tokens</span>
+    </div>
+    <div class="cost-row">
+      <div class="cost-bar-wrap"><div class="cost-bar" style="width:5%"></div></div>
+      <div class="cost-val">0.519 coins</div>
+    </div>
+    <div class="task-prompt">upgrade_status_tool.py · upgrade_approval_agent.yaml · granite_summarizer.py · ibm/granite-4-h-small</div>
+  </div>
+
+  <div class="task-card" style="--mc:#f43f5e">
+    <div class="task-header">
+      <span class="task-num">TASK 06</span>
+      <span class="task-title">Final README + self-contained live dashboard (server.py + index.html)</span>
+    </div>
+    <div class="task-meta">
+      <span class="pill pill-mode">agent mode</span>
+      <span class="pill pill-msgs">89 messages</span>
+      <span class="pill pill-todos">5/5 todos done</span>
+      <span class="pill pill-tokens">57,441 ctx tokens</span>
+    </div>
+    <div class="cost-row">
+      <div class="cost-bar-wrap"><div class="cost-bar" style="width:22%"></div></div>
+      <div class="cost-val">2.381 coins</div>
+    </div>
+    <div class="task-prompt">Mermaid architecture · measured impact table · demo script · dashboard with 5 tabs</div>
+  </div>
+
+  <div class="task-card" style="--mc:#10d98a">
+    <div class="task-header">
+      <span class="task-num">TASK 07</span>
+      <span class="task-title">--force live pipeline flag + streaming migration runner (86 tests green)</span>
+    </div>
+    <div class="task-meta">
+      <span class="pill pill-mode">agent mode</span>
+      <span class="pill pill-msgs">50 messages</span>
+      <span class="pill pill-todos">6/6 todos done</span>
+      <span class="pill pill-tokens">63,586 ctx tokens</span>
+    </div>
+    <div class="cost-row">
+      <div class="cost-bar-wrap"><div class="cost-bar" style="width:20%"></div></div>
+      <div class="cost-val">2.129 coins</div>
+    </div>
+    <div class="task-prompt">--force bypasses cache · [analyst]/[scanner] live output · POST /api/run-migration streaming · 409 guard</div>
+  </div>
+
+  
+  <div style="background:#0e1420;border:1px solid #1e2d47;border-radius:12px;padding:18px 22px;margin-top:8px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <span style="font-size:12px;font-weight:700;color:#6b7a99;text-transform:uppercase;letter-spacing:0.8px">Total Bobcoin usage</span>
+      <span style="font-size:20px;font-weight:900;color:#10d98a;letter-spacing:-0.5px">10.88 / 40 coins (27%)</span>
+    </div>
+    <div style="background:#151d2e;border-radius:8px;height:12px;overflow:hidden">
+      <div style="width:27%;height:12px;border-radius:8px;background:linear-gradient(90deg,#059669,#10d98a)"></div>
+    </div>
+    <div style="margin-top:10px;font-size:11.5px;color:#6b7a99">Built the full UpLift agentic migration system — 4 custom modes, orchestrator, dashboard, watsonx integration, 86 tests — in under 30% of the allocated budget.</div>
+  </div>
+
+  <footer>Made with IBM Bob · UpLift · IBM TechXchange 2026 Hackathon</footer>
+</div>
+</body>
+</html>

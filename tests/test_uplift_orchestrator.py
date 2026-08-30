@@ -112,7 +112,7 @@ class TestCLI:
         from uplift.__main__ import main
         with patch("uplift.__main__.upgrade", return_value=True) as mock_up:
             rc = main(["upgrade", "pydantic"])
-        mock_up.assert_called_once_with("pydantic")
+        mock_up.assert_called_once_with("pydantic", force=False)
         assert rc == 0
 
     def test_upgrade_failure_returns_1(self):
@@ -997,3 +997,184 @@ class TestUpgradeNeedsHumanReviewPassthrough:
         finally:
             for k, v in orig_paths.items():
                 setattr(orchestrator, k, v)
+
+
+# ---------------------------------------------------------------------------
+# --force flag tests
+# ---------------------------------------------------------------------------
+
+class TestForceFlag:
+    """Tests for the --force CLI flag and its effect on the pipeline."""
+
+    def test_force_flag_parsed(self):
+        from uplift.__main__ import build_parser
+        parser = build_parser()
+        args = parser.parse_args(["upgrade", "pydantic", "--force"])
+        assert args.force is True
+
+    def test_force_flag_default_false(self):
+        from uplift.__main__ import build_parser
+        parser = build_parser()
+        args = parser.parse_args(["upgrade", "pydantic"])
+        assert args.force is False
+
+    def test_force_flag_in_help(self):
+        from uplift.__main__ import build_parser
+        import io
+        parser = build_parser()
+        buf = io.StringIO()
+        try:
+            parser.parse_args(["upgrade", "--help"])
+        except SystemExit:
+            pass
+        # Capture help via format_help on the upgrade sub-parser
+        for action in parser._subparsers._group_actions:
+            for name, subparser in action.choices.items():
+                if name == "upgrade":
+                    help_text = subparser.format_help()
+                    assert "--force" in help_text
+
+    def test_force_flag_calls_upgrade_with_force_true(self):
+        from uplift.__main__ import main
+        with patch("uplift.__main__.upgrade", return_value=True) as mock_up:
+            rc = main(["upgrade", "pydantic", "--force"])
+        mock_up.assert_called_once_with("pydantic", force=True)
+        assert rc == 0
+
+    def test_no_force_flag_calls_upgrade_with_force_false(self):
+        from uplift.__main__ import main
+        with patch("uplift.__main__.upgrade", return_value=True) as mock_up:
+            rc = main(["upgrade", "pydantic"])
+        mock_up.assert_called_once_with("pydantic", force=False)
+        assert rc == 0
+
+    def test_force_bypasses_cached_breaking_changes(self, tmp_path):
+        """With force=True, existing breaking-changes.json is ignored and regenerated."""
+        reports = tmp_path / "reports"
+        reports.mkdir()
+        docs = tmp_path / "docs"
+        docs.mkdir()
+        guide = docs / "migration-guide.md"
+        guide.write_text(
+            "\n".join(
+                f"## {i}. Section {i}\n\nDesc {i}.\n\n```python\n# v1\nold_{i}()\n```\n\n"
+                f"```python\n# v2\nnew_{i}()\n```\n"
+                for i in range(1, 7)
+            ),
+            encoding="utf-8",
+        )
+        # Pre-populate the cache with a sentinel that would signal a cache hit
+        stale_data = [{"id": "STALE", "title": "stale"}]
+        (reports / "breaking-changes.json").write_text(json.dumps(stale_data), encoding="utf-8")
+
+        from uplift import orchestrator
+        orig_bc_path = orchestrator.BREAKING_CHANGES_PATH
+        orig_guide_path = orchestrator.MIGRATION_GUIDE_PATH
+        orig_reports_dir = orchestrator.REPORTS_DIR
+        orchestrator.BREAKING_CHANGES_PATH = reports / "breaking-changes.json"
+        orchestrator.MIGRATION_GUIDE_PATH = guide
+        orchestrator.REPORTS_DIR = reports
+        try:
+            result = orchestrator.run_changelog_analyst(force=True)
+        finally:
+            orchestrator.BREAKING_CHANGES_PATH = orig_bc_path
+            orchestrator.MIGRATION_GUIDE_PATH = orig_guide_path
+            orchestrator.REPORTS_DIR = orig_reports_dir
+
+        # Must NOT return the stale sentinel; must return fresh 6-entry list
+        assert len(result) == 6
+        assert result[0]["id"] == "BC-001"
+
+    def test_force_bypasses_cached_usage_map(self, tmp_path):
+        """With force=True, existing usage-map.json is ignored and re-scanned."""
+        src = tmp_path / "src"
+        src.mkdir()
+        (src / "settings.py").write_text("from pydantic import BaseSettings\n", encoding="utf-8")
+        reports = tmp_path / "reports"
+        reports.mkdir()
+        # Pre-populate with stale/empty map
+        stale = {"BC-001": [], "BC-002": [], "BC-003": [], "BC-004": [], "BC-005": [], "BC-006": []}
+        (reports / "usage-map.json").write_text(json.dumps(stale), encoding="utf-8")
+
+        from uplift import orchestrator
+        orig_usage = orchestrator.USAGE_MAP_PATH
+        orig_src = orchestrator.SRC_ROOT
+        orig_test = orchestrator.TEST_ROOT
+        orig_reports = orchestrator.REPORTS_DIR
+        orchestrator.USAGE_MAP_PATH = reports / "usage-map.json"
+        orchestrator.SRC_ROOT = src
+        orchestrator.TEST_ROOT = tmp_path / "nonexistent_tests"
+        orchestrator.REPORTS_DIR = reports
+        try:
+            result = orchestrator.run_usage_scanner(_make_bc_list(), force=True)
+        finally:
+            orchestrator.USAGE_MAP_PATH = orig_usage
+            orchestrator.SRC_ROOT = orig_src
+            orchestrator.TEST_ROOT = orig_test
+            orchestrator.REPORTS_DIR = orig_reports
+
+        # Must have found the real usage in settings.py
+        assert any("settings.py" in u["file"] for u in result["BC-001"])
+
+    def test_force_output_lines(self, tmp_path, capsys):
+        """force=True prints the canonical '[analyst] extracted N ...' lines."""
+        reports = tmp_path / "reports"
+        reports.mkdir()
+        docs = tmp_path / "docs"
+        docs.mkdir()
+        guide = docs / "migration-guide.md"
+        guide.write_text(
+            "\n".join(
+                f"## {i}. Section {i}\n\nDesc {i}.\n\n```python\n# v1\nold_{i}()\n```\n\n"
+                f"```python\n# v2\nnew_{i}()\n```\n"
+                for i in range(1, 7)
+            ),
+            encoding="utf-8",
+        )
+
+        from uplift import orchestrator
+        orig_bc_path = orchestrator.BREAKING_CHANGES_PATH
+        orig_guide_path = orchestrator.MIGRATION_GUIDE_PATH
+        orig_reports_dir = orchestrator.REPORTS_DIR
+        orchestrator.BREAKING_CHANGES_PATH = reports / "breaking-changes.json"
+        orchestrator.MIGRATION_GUIDE_PATH = guide
+        orchestrator.REPORTS_DIR = reports
+        try:
+            bc_list = orchestrator.run_changelog_analyst(force=True)
+        finally:
+            orchestrator.BREAKING_CHANGES_PATH = orig_bc_path
+            orchestrator.MIGRATION_GUIDE_PATH = orig_guide_path
+            orchestrator.REPORTS_DIR = orig_reports_dir
+
+        captured = capsys.readouterr()
+        assert "[analyst] extracted" in captured.out
+        assert "6" in captured.out
+
+    def test_force_scanner_output_lines(self, tmp_path, capsys):
+        """force=True on scanner prints '[scanner] found N usage sites'."""
+        src = tmp_path / "src"
+        src.mkdir()
+        (src / "s.py").write_text("from pydantic import BaseSettings\n", encoding="utf-8")
+        reports = tmp_path / "reports"
+        reports.mkdir()
+
+        from uplift import orchestrator
+        orig_usage = orchestrator.USAGE_MAP_PATH
+        orig_src = orchestrator.SRC_ROOT
+        orig_test = orchestrator.TEST_ROOT
+        orig_reports = orchestrator.REPORTS_DIR
+        orchestrator.USAGE_MAP_PATH = reports / "usage-map.json"
+        orchestrator.SRC_ROOT = src
+        orchestrator.TEST_ROOT = tmp_path / "nonexistent_tests"
+        orchestrator.REPORTS_DIR = reports
+        try:
+            orchestrator.run_usage_scanner(_make_bc_list(), force=True)
+        finally:
+            orchestrator.USAGE_MAP_PATH = orig_usage
+            orchestrator.SRC_ROOT = orig_src
+            orchestrator.TEST_ROOT = orig_test
+            orchestrator.REPORTS_DIR = orig_reports
+
+        captured = capsys.readouterr()
+        assert "[scanner] found" in captured.out
+        assert "usage sites" in captured.out

@@ -23,6 +23,18 @@ def build_parser() -> argparse.ArgumentParser:
         "library",
         help=f"Library to upgrade. Supported: {', '.join(sorted(SUPPORTED_LIBRARIES))}",
     )
+    upgrade_parser.add_argument(
+        "--force",
+        action="store_true",
+        default=False,
+        help=(
+            "Ignore cached reports/*.json and regenerate them live. "
+            "Runs analyst.extract_breaking_changes(docs/migration-guide.md) and "
+            "scanner.scan_usages() from scratch, then continues the normal "
+            "migration pipeline.  Useful for demo runs where you want judges to "
+            "see the full document→code pipeline execute end-to-end."
+        ),
+    )
     return parser
 
 
@@ -42,7 +54,8 @@ def main(argv: list[str] | None = None) -> int:
                 file=sys.stderr,
             )
             return 2
-        success = upgrade(args.library)
+        force: bool = getattr(args, "force", False)
+        success = upgrade(args.library, force=force)
         return 0 if success else 1
 
     parser.print_help()

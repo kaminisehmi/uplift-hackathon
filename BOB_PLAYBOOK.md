@@ -183,7 +183,29 @@ Then, as the final task:
 
 ## Submission checklist
 
-- [ ] `bob_sessions/` has a named PNG for every task above (every member)
-- [ ] Repo pushed with README, UPGRADE_REPORT.md, reports/*.json
-- [ ] No IBM Cloud API keys anywhere in the repo (auto-detection = suspension)
-- [ ] Bob instance used: ibm-coding-challenge-uat (us-east)
+### Must-do before presenting (highest-priority first)
+
+**PNG screenshots** — the letter of the requirement; 4 keypresses each:
+- [ ] Open each completed task in Bob IDE → scroll to session summary panel → `Cmd+Shift+3`
+- [ ] Save as `bob_sessions/kamini_task0N_<desc>_summary.png`
+- [ ] Minimum set: task03 (orchestrator), task04c+4d (parallel tasks), task02 (custom modes), task07 (--force demo)
+- [ ] See `bob_sessions/README.md` for the full ordered list
+
+**watsonx live demo** (turns "claimed" into "shown"):
+- [ ] `source .env` with hackathon cloud credentials
+- [ ] `orchestrate env activate <hackathon-env>` + `orchestrate tools import` + `orchestrate agents import`
+- [ ] `orchestrate agents chat --name upgrade_approval_agent` → approve the migration → screenshot
+- [ ] `python orchestrate/granite_summarizer.py` → screenshot Granite output
+- [ ] See `orchestrate/README.md` sections A–F for exact commands (~20 min)
+
+**Rehearse the 90-second demo once** (see demo script in `README.md §5`):
+- [ ] `python -m uplift upgrade pydantic --force` — confirm `[analyst] extracted 6` and `[scanner] found 15` lines print
+- [ ] `python dashboard/server.py` → click "⚡ Run migration" → confirm terminal panel streams
+
+### Already done ✅
+- [x] `bob_sessions/` has JSON exports for all 11 tasks (machine-verifiable, Bobcoin data included)
+- [x] 86/86 tests green (`python -m pytest`)
+- [x] Repo has README.md, UPGRADE_REPORT.md, reports/*.json, UPGRADE_REPORT.md
+- [x] No IBM Cloud API keys in repo (`.env` in `.gitignore`, credentials env-var only)
+- [x] Bob instance: ibm-coding-challenge-uat (us-east)
+- [x] `--force` live pipeline + streaming dashboard runner implemented and tested

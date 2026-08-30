@@ -8,12 +8,17 @@ import json
 import os
 import subprocess
 import sys
+import threading
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent   # repo root
 REPORTS = ROOT / "reports"
 STATIC = Path(__file__).resolve().parent        # dashboard/
+
+# ── concurrency guard for /api/run-migration ──────────────────────────────
+_migration_lock = threading.Lock()
+_migration_running = False
 
 
 def _json(path: Path) -> object:
@@ -82,6 +87,80 @@ class Handler(BaseHTTPRequestHandler):
 
         else:
             self._json_response({"error": "not found"}, 404)
+
+    def do_POST(self) -> None:
+        path = self.path.split("?")[0]
+
+        if path == "/api/run-migration":
+            self._handle_run_migration()
+        else:
+            self._json_response({"error": "not found"}, 404)
+
+    def _handle_run_migration(self) -> None:
+        """Stream `uplift upgrade pydantic --force` stdout to the client.
+
+        Uses chunked transfer encoding so the browser receives each output line
+        as it is emitted.  Guards against concurrent runs with a 409 response.
+        """
+        global _migration_running
+
+        with _migration_lock:
+            if _migration_running:
+                self._json_response(
+                    {"error": "A migration is already running. Please wait."},
+                    status=409,
+                )
+                return
+            _migration_running = True
+
+        try:
+            self.send_response(200)
+            self.send_header("Content-Type", "text/plain; charset=utf-8")
+            self.send_header("Transfer-Encoding", "chunked")
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.send_header("Cache-Control", "no-cache")
+            self.end_headers()
+
+            cmd = [sys.executable, "-m", "uplift", "upgrade", "pydantic", "--force"]
+            proc = subprocess.Popen(
+                cmd,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                cwd=str(ROOT),
+                text=True,
+                bufsize=1,
+            )
+
+            assert proc.stdout is not None  # always set when stdout=PIPE
+            for line in proc.stdout:
+                chunk = line.encode("utf-8")
+                # chunked encoding: <hex-size>\r\n<data>\r\n
+                self.wfile.write(f"{len(chunk):x}\r\n".encode())
+                self.wfile.write(chunk)
+                self.wfile.write(b"\r\n")
+                self.wfile.flush()
+
+            proc.wait()
+            rc_line = f"[uplift] exit code {proc.returncode}\n".encode("utf-8")
+            self.wfile.write(f"{len(rc_line):x}\r\n".encode())
+            self.wfile.write(rc_line)
+            self.wfile.write(b"\r\n")
+            # chunked terminator
+            self.wfile.write(b"0\r\n\r\n")
+            self.wfile.flush()
+        except Exception as exc:  # noqa: BLE001
+            # Best-effort: if headers not yet sent this will fail silently
+            try:
+                err = f"[error] {exc}\n".encode("utf-8")
+                self.wfile.write(f"{len(err):x}\r\n".encode())
+                self.wfile.write(err)
+                self.wfile.write(b"\r\n0\r\n\r\n")
+                self.wfile.flush()
+            except Exception:  # noqa: BLE001
+                pass
+        finally:
+            with _migration_lock:
+                _migration_running = False
 
 
 def main() -> None:

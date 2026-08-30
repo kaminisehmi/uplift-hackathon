@@ -35,13 +35,14 @@ TEST_ROOT = Path("tests")
 # Stage helpers
 # ---------------------------------------------------------------------------
 
-def run_changelog_analyst() -> list[dict[str, Any]]:
+def run_changelog_analyst(force: bool = False) -> list[dict[str, Any]]:
     """Parse migration guide and write breaking-changes.json.
 
     If the file already exists (pre-populated by a Bob mode run) it is read
-    directly.  Otherwise it is generated from docs/migration-guide.md.
+    directly — unless *force* is True, in which case it is always regenerated
+    from docs/migration-guide.md so judges see the live document→code pipeline.
     """
-    if BREAKING_CHANGES_PATH.exists():
+    if BREAKING_CHANGES_PATH.exists() and not force:
         with BREAKING_CHANGES_PATH.open() as fh:
             return json.load(fh)
 
@@ -55,16 +56,19 @@ def run_changelog_analyst() -> list[dict[str, Any]]:
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     with BREAKING_CHANGES_PATH.open("w") as fh:
         json.dump(bc_list, fh, indent=2)
-    print(f"[analyst] Wrote {BREAKING_CHANGES_PATH} ({len(bc_list)} entries)")
+    print(f"[analyst] extracted {len(bc_list)} breaking changes")
     return bc_list
 
 
-def run_usage_scanner(bc_list: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
+def run_usage_scanner(
+    bc_list: list[dict[str, Any]], force: bool = False
+) -> dict[str, list[dict[str, Any]]]:
     """Scan src/ and tests/ for usages and write usage-map.json.
 
-    If the file already exists it is read directly.
+    If the file already exists it is read directly — unless *force* is True,
+    in which case the scan is always re-run live.
     """
-    if USAGE_MAP_PATH.exists():
+    if USAGE_MAP_PATH.exists() and not force:
         with USAGE_MAP_PATH.open() as fh:
             return json.load(fh)
 
@@ -73,7 +77,7 @@ def run_usage_scanner(bc_list: list[dict[str, Any]]) -> dict[str, list[dict[str,
     with USAGE_MAP_PATH.open("w") as fh:
         json.dump(usage_map, fh, indent=2)
     total = sum(len(v) for v in usage_map.values())
-    print(f"[scanner] Wrote {USAGE_MAP_PATH} ({total} usage sites)")
+    print(f"[scanner] found {total} usage sites")
     return usage_map
 
 
@@ -136,15 +140,22 @@ def run_verifier(
 # Top-level coordinator
 # ---------------------------------------------------------------------------
 
-def upgrade(library: str) -> bool:
-    """Drive the full migration pipeline for *library*."""
-    print(f"[uplift] Starting upgrade: {library}")
+def upgrade(library: str, force: bool = False) -> bool:
+    """Drive the full migration pipeline for *library*.
+
+    Args:
+        library: The library name to upgrade (e.g. ``"pydantic"``).
+        force:   When True, cached reports/*.json are ignored and both the
+                 changelog analyst and usage scanner re-run live so the full
+                 document→code pipeline is visible.
+    """
+    print(f"[uplift] Starting upgrade: {library}" + (" (--force)" if force else ""))
 
     # Stage 1 — changelog analyst
-    bc_list = run_changelog_analyst()
+    bc_list = run_changelog_analyst(force=force)
 
     # Stage 2 — usage scanner
-    usage_map = run_usage_scanner(bc_list)
+    usage_map = run_usage_scanner(bc_list, force=force)
 
     # Stage 3 — code migrators (parallel)
     changes = run_code_migrators(usage_map, bc_list)
