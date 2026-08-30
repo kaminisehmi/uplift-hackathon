@@ -100,11 +100,14 @@ def _transform_bc002(text: str) -> tuple[str, int]:
     )
     count += n
 
-    # Replace @root_validator with @model_validator(mode="after") + @classmethod
+    # Replace @root_validator with @model_validator(mode="after").
+    # mode="after" validators receive the model instance (self), not (cls, values),
+    # so the signature and the values-dict body idioms must be rewritten too.
     def _fix_root_validator(m: re.Match[str]) -> str:
         indent = m.group(1)
         func_line = m.group(2)
-        return f'{indent}@model_validator(mode="after")\n{indent}@classmethod\n{indent}{func_line}'
+        func_line = re.sub(r"\(\s*cls\s*,\s*values\s*\)", "(self)", func_line)
+        return f'{indent}@model_validator(mode="after")\n{indent}{func_line}'
 
     new_text, n = re.subn(
         r"^( *)@root_validator\n\1(def \w+.*:)",
@@ -113,6 +116,19 @@ def _transform_bc002(text: str) -> tuple[str, int]:
         flags=re.MULTILINE,
     )
     count += n
+
+    if n:
+        new_text = re.sub(
+            r"\bvalues\.get\(\s*([\"']\w+[\"'])\s*,\s*([^)]+)\)",
+            r"getattr(self, \1, \2)",
+            new_text,
+        )
+        new_text = re.sub(
+            r"\bvalues\.get\(\s*([\"']\w+[\"'])\s*\)",
+            r"getattr(self, \1, None)",
+            new_text,
+        )
+        new_text = re.sub(r"\breturn values\b", "return self", new_text)
 
     return new_text, count
 
