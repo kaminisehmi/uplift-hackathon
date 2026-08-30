@@ -23,8 +23,9 @@ consumption summary panel.
 | 4e | `kamini_task04e_verifier_green_summary.json` | Verifier mode — BC-006 fix, 77/77 green | 0.431 |
 | 5 | `kamini_task05_orchestrate_granite_summary.json` | watsonx Orchestrate ADK + Granite integration | 0.519 |
 | 6 | `kamini_task06_final_readme_and_dashboard_summary.json` | Final README + self-contained live dashboard | 2.38 |
+| 7 | `kamini_task07_force_flag_streaming_dashboard_summary.json` | --force live pipeline flag + streaming migration runner (86 tests green) | 2.13 |
 
-**Total: ≈8.75 Bobcoins of the 40 allocated (≈22%)** — including a follow-up demo-polish task (--force live pipeline + streaming dashboard runner).
+**Total: ≈10.88 Bobcoins of the 40 allocated (≈27%)** — including a follow-up demo-polish task (--force live pipeline + streaming dashboard runner).
 
 Parallel-task evidence: tasks 4c and 4d carry overlapping timestamps in their
 exports — both were running simultaneously in two Bob chat panels.
