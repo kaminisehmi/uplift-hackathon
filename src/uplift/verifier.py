@@ -7,6 +7,7 @@ from __future__ import annotations
 import json
 import re
 import subprocess
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -21,7 +22,7 @@ def run_pytest(cwd: Path | None = None) -> tuple[bool, int]:
     *failure_count* is parsed from pytest output on failure; 0 on success.
     """
     result = subprocess.run(
-        ["python", "-m", "pytest", "--tb=no", "-q"],
+        [sys.executable, "-m", "pytest", "--tb=no", "-q"],
         capture_output=True,
         text=True,
         cwd=cwd,
