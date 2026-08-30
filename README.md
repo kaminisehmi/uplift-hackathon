@@ -6,7 +6,7 @@
 **IBM TechXchange 2026 Pre-conference Dev Day Hackathon submission.**
 Built with **IBM Bob IDE** (Plan/Code modes, custom modes as subagents,
 parallel tasks, custom rules, document understanding), with **watsonx.ai
-(IBM Granite)** for inference and a **watsonx Orchestrate** human-approval
+(IBM Granite (granite-4-h-small))** for inference and a **watsonx Orchestrate** human-approval
 agent.
 
 ## 1. The problem
@@ -50,7 +50,7 @@ flowchart TD
     UR[UPGRADE_REPORT.md\n77/77 green]
 
     WO["watsonx Orchestrate\nUpgrade Approval Agent\nhuman approve / reject"]
-    WX["watsonx.ai\nIBM Granite\nsummarizer"]
+    WX["watsonx.ai\nIBM Granite (granite-4-h-small)\nsummarizer"]
 
     MG --> CA --> BC --> US --> UM
     UM --> MA
@@ -75,30 +75,58 @@ flowchart TD
 Evidence: see [`bob_sessions/`](bob_sessions/) for task session
 consumption summaries, as required by the hackathon guide.
 
-## 5. Demo script
+## 5. Demo script (90-second live version)
+
+Two modes: **replay** (sub-second, uses cached reports) and **--force**
+(live pipeline visible end-to-end — use this for judging).
 
 ```bash
-# 0. Restore the pre-migration state
+# 0. Restore the pre-migration state  (only needed if you already ran the migration)
 git checkout demo-v1-state
 
-# 1. Baseline — all green on pydantic v1
+# ── STEP 1: prove it was green ──────────────────────────────────────────────
 python3.12 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 pip install -e .                          # installs the uplift CLI
-python -m pytest                          # 77 passed
+python -m pytest                          # → 77 passed  ✅
 
-# 2. The "Dependabot moment" — bump the dependency
+# ── STEP 2: the "Dependabot moment" ─────────────────────────────────────────
 pip install "pydantic>=2" pydantic-settings
-python -m pytest                          # failures across multiple files
+python -m pytest                          # → failures across 4 files  ❌
+# Narrate: "This is what a Dependabot version bump does to you.
+#  Six API surfaces changed simultaneously. Someone has to read
+#  the migration guide and fix every one. UpLift does that."
 
-# 3. UpLift takes over
-python -m uplift upgrade pydantic         # full pipeline replays in < 1 second
+# ── STEP 3: UpLift live pipeline (--force shows document→code in real-time) ─
+python -m uplift upgrade pydantic --force
+# Expected output (lines appear as each stage completes):
+#   [uplift] Starting upgrade: pydantic (--force)
+#   [analyst] extracted 6 breaking changes       ← read the migration guide
+#   [scanner] found 15 usage sites               ← scanned src/ + tests/
+#   [migrator-A] Applied N changes               ← models.py (parallel)
+#   [migrator-B] Applied N changes               ← settings.py + service.py
+#   [verifier] Attempt 1: FAILED (1 failures)
+#   [verifier] Attempt 2: PASSED                 ← BC-006 TypeError→ValidationError auto-fixed
+#   [uplift] Migration complete — all tests green.
 
-# 4. Verify
-python -m pytest                          # 77 passed, 0 failed
+# ── STEP 4: verify ───────────────────────────────────────────────────────────
+python -m pytest                          # → 77 passed, 0 failed  ✅
 
-# 5. Review what changed
+# ── STEP 5: inspect the report ───────────────────────────────────────────────
 cat UPGRADE_REPORT.md
+# Point at needs_human_review:
+# "It handled 5 of 6 automatically and flagged the behavioral
+#  change — the trust story is knowing what it didn't auto-apply."
+```
+
+### Dashboard demo (optional, visual)
+
+```bash
+python dashboard/server.py
+# Open http://localhost:7890
+# → Overview tab: stat cards, pipeline diagram, verifier attempts
+# → Click "⚡ Run migration (--force)" — streams the full pipeline live
+# → Report widgets auto-refresh when the run finishes
 ```
 
 ## 6. Measured impact

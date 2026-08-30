@@ -29,7 +29,7 @@ from pathlib import Path
 # ---------------------------------------------------------------------------
 _REPO_ROOT = Path(__file__).resolve().parent.parent
 _MIGRATION_GUIDE = _REPO_ROOT / "docs" / "migration-guide.md"
-_MODEL_ID = "ibm/granite-3-3-8b-instruct"
+_MODEL_ID = "ibm/granite-4-h-small"
 
 # ---------------------------------------------------------------------------
 # Credential helpers

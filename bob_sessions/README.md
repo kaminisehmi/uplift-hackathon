@@ -23,14 +23,63 @@ consumption summary panel.
 | 4e | `kamini_task04e_verifier_green_summary.json` | Verifier mode — BC-006 fix, 77/77 green | 0.431 |
 | 5 | `kamini_task05_orchestrate_granite_summary.json` | watsonx Orchestrate ADK + Granite integration | 0.519 |
 | 6 | `kamini_task06_final_readme_and_dashboard_summary.json` | Final README + self-contained live dashboard | 2.38 |
-| 7 | `kamini_task07_force_flag_streaming_dashboard_summary.json` | --force live pipeline flag + streaming migration runner (86 tests green) | 2.13 |
+| 7 | `kamini_task07_force_flag_streaming_dashboard_summary.json` | --force live pipeline flag + streaming dashboard runner (86 tests green) | 2.13 |
 
-**Total: ≈10.88 Bobcoins of the 40 allocated (≈27%)** — including a follow-up demo-polish task (--force live pipeline + streaming dashboard runner).
+**Total: ≈10.88 Bobcoins of the 40 allocated (≈27%)** — including demo-polish tasks.
 
 Parallel-task evidence: tasks 4c and 4d carry overlapping timestamps in their
 exports — both were running simultaneously in two Bob chat panels.
 
-## Screenshots
+---
 
-PNG screenshots of the task session consumption summaries (same panels the
-JSON was exported from) accompany these files per the submission guide.
+## ⚠️  REQUIRED: take PNG screenshots now (4 steps, ~5 minutes total)
+
+The hackathon guide specifically asks for task session **screenshots** in
+`bob_sessions/`. The JSON exports contain all the same data and are
+machine-verifiable, but the letter of the requirement is a PNG per task.
+
+**One-time setup (macOS):**
+PNG auto-saves to the Desktop by default (`Cmd+Shift+3`), or use
+`Cmd+Shift+4` to select a region.
+
+**For each task below, open the task in Bob IDE, scroll to the
+session consumption summary (Bobcoin panel at the bottom), and screenshot:**
+
+```
+Task 0  →  kamini_task00_init_summary.png
+Task 1  →  kamini_task01_plan_summary.png
+Task 2  →  kamini_task02_custom_modes_and_scanner_summary.png
+Task 3  →  kamini_task03_orchestrator_summary.png
+Task 4c →  kamini_task04c_migrator_a_models_summary.png          ← shows parallel run
+Task 4d →  kamini_task04d_migrator_b_settings_service_summary.png ← shows parallel run
+Task 4e →  kamini_task04e_verifier_green_summary.png
+Task 5  →  kamini_task05_orchestrate_granite_summary.png
+Task 6  →  kamini_task06_final_readme_and_dashboard_summary.png
+Task 7  →  kamini_task07_force_flag_streaming_dashboard_summary.png
+```
+
+Move the PNGs from your Desktop into this `bob_sessions/` folder.
+Note: `.bobignore` excludes `*.png` to keep Bob's context window clean —
+the files are still committed to git and visible to judges.
+
+**Highest-value screenshots** (if time is short, grab these first):
+1. `kamini_task03_orchestrator_summary.png` — most Bobcoins, most capability shown
+2. `kamini_task04c/4d` pair — proves parallel subagent execution
+3. `kamini_task02` — proves custom mode creation
+4. `kamini_task07` — proves the --force live pipeline demo feature
+
+---
+
+## Screenshots (add filenames here as you take them)
+
+<!-- Update this list as you take screenshots -->
+- [ ] kamini_task00_init_summary.png
+- [ ] kamini_task01_plan_summary.png
+- [ ] kamini_task02_custom_modes_and_scanner_summary.png
+- [ ] kamini_task03_orchestrator_summary.png
+- [ ] kamini_task04c_migrator_a_models_summary.png
+- [ ] kamini_task04d_migrator_b_settings_service_summary.png
+- [ ] kamini_task04e_verifier_green_summary.png
+- [ ] kamini_task05_orchestrate_granite_summary.png
+- [ ] kamini_task06_final_readme_and_dashboard_summary.png
+- [ ] kamini_task07_force_flag_streaming_dashboard_summary.png

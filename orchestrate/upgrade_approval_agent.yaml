@@ -40,4 +40,4 @@ tools:
 
 llm:
   provider: watsonx
-  model_id: ibm/granite-3-3-8b-instruct
+  model_id: ibm/granite-4-h-small

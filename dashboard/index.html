@@ -8,309 +8,488 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg: #0f1117;
-    --surface: #1a1d27;
-    --surface2: #22263a;
-    --border: #2e3450;
-    --text: #e4e6f0;
-    --muted: #7c84a6;
-    --green: #22c55e;
-    --red: #ef4444;
+    --bg: #070b14;
+    --surface: #0e1420;
+    --surface2: #151d2e;
+    --surface3: #1c2640;
+    --border: #1e2d47;
+    --border2: #243354;
+    --text: #e8ecf4;
+    --muted: #6b7a99;
+    --muted2: #4a5568;
+    --green: #10d98a;
+    --green2: #059669;
+    --red: #f43f5e;
     --yellow: #f59e0b;
     --blue: #3b82f6;
-    --purple: #8b5cf6;
+    --blue2: #1d4ed8;
+    --purple: #a855f7;
     --accent: #6366f1;
+    --accent2: #4f46e5;
+    --cyan: #06b6d4;
+    --glow: rgba(99,102,241,0.15);
   }
 
   body {
-    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+    font-family: -apple-system, "Inter", "Segoe UI", system-ui, sans-serif;
     background: var(--bg);
     color: var(--text);
     font-size: 14px;
     line-height: 1.6;
     min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99,102,241,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 30% at 80% 10%, rgba(168,85,247,0.06) 0%, transparent 50%);
   }
 
+  /* ── HEADER ── */
   header {
-    background: var(--surface);
+    background: rgba(14,20,32,0.85);
+    backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border);
-    padding: 16px 32px;
+    padding: 0 32px;
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 20px;
+    height: 60px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
   }
-  header .logo { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
-  header .logo span { color: var(--accent); }
-  header .tagline { color: var(--muted); font-size: 13px; }
-  header .badge {
+  .logo {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.8px;
+    background: linear-gradient(135deg, #818cf8 0%, #a855f7 50%, #06b6d4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .tagline {
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 0.2px;
+  }
+  .header-badge {
     margin-left: auto;
-    background: var(--green);
-    color: #000;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .badge-pill {
+    background: rgba(16,217,138,0.12);
+    color: var(--green);
+    border: 1px solid rgba(16,217,138,0.25);
     font-size: 11px;
     font-weight: 700;
-    padding: 3px 10px;
-    border-radius: 999px;
+    padding: 4px 12px;
+    border-radius: 20px;
     letter-spacing: 0.5px;
   }
+  .badge-pill.red { background: rgba(244,63,94,0.12); color: var(--red); border-color: rgba(244,63,94,0.25); }
+  .ibm-badge {
+    background: rgba(99,102,241,0.12);
+    color: #818cf8;
+    border: 1px solid rgba(99,102,241,0.2);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+  }
 
+  /* ── NAV ── */
   nav {
-    background: var(--surface);
+    background: rgba(14,20,32,0.6);
+    backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border);
-    display: flex;
-    gap: 0;
     padding: 0 32px;
+    display: flex;
+    gap: 4px;
   }
   nav button {
     background: none;
     border: none;
     color: var(--muted);
-    padding: 12px 18px;
+    padding: 14px 16px;
     font-size: 13px;
+    font-weight: 500;
     cursor: pointer;
     border-bottom: 2px solid transparent;
-    transition: color 0.15s, border-color 0.15s;
+    transition: all 0.2s;
+    letter-spacing: 0.1px;
   }
-  nav button:hover { color: var(--text); }
-  nav button.active { color: var(--accent); border-bottom-color: var(--accent); }
+  nav button:hover { color: var(--text); background: rgba(255,255,255,0.03); border-radius: 6px 6px 0 0; }
+  nav button.active { color: #818cf8; border-bottom-color: var(--accent); }
 
-  main { max-width: 1100px; margin: 0 auto; padding: 28px 24px; }
+  main { max-width: 1160px; margin: 0 auto; padding: 32px 24px 60px; }
 
-  .tab-panel { display: none; }
+  .tab-panel { display: none; animation: fadeIn 0.2s ease; }
   .tab-panel.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
-  /* ── stat cards ── */
+  /* ── STAT CARDS ── */
   .stat-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-    gap: 14px;
-    margin-bottom: 28px;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
   }
   .stat-card {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 18px 20px;
+    border-radius: 14px;
+    padding: 20px 22px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
   }
-  .stat-card .label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; }
-  .stat-card .value { font-size: 28px; font-weight: 700; line-height: 1; }
-  .stat-card .sub   { color: var(--muted); font-size: 11px; margin-top: 4px; }
-  .green { color: var(--green); }
-  .red   { color: var(--red); }
-  .blue  { color: var(--blue); }
-  .yellow{ color: var(--yellow); }
-  .purple{ color: var(--purple); }
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--card-accent, linear-gradient(90deg, var(--accent), var(--purple)));
+  }
+  .stat-card:hover { transform: translateY(-2px); border-color: var(--border2); }
+  .stat-card .icon { font-size: 22px; margin-bottom: 10px; display: block; }
+  .stat-card .label { color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; font-weight: 600; }
+  .stat-card .value { font-size: 30px; font-weight: 800; line-height: 1; letter-spacing: -1px; }
+  .stat-card .sub { color: var(--muted); font-size: 11px; margin-top: 6px; }
+  .c-green  { color: var(--green); }
+  .c-red    { color: var(--red); }
+  .c-blue   { color: var(--blue); }
+  .c-yellow { color: var(--yellow); }
+  .c-purple { color: var(--purple); }
+  .c-cyan   { color: var(--cyan); }
+  .c-accent { color: #818cf8; }
 
-  /* ── pipeline flow ── */
+  /* ── SECTION TITLE ── */
+  .section-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--muted);
+    margin: 28px 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── PIPELINE ── */
+  .pipeline-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 20px;
+    overflow-x: auto;
+    margin-bottom: 8px;
+  }
   .pipeline {
     display: flex;
     align-items: center;
-    gap: 0;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 24px 28px;
-    margin-bottom: 28px;
-    flex-wrap: wrap;
-    row-gap: 12px;
-  }
-  .pipe-node {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     gap: 4px;
-    min-width: 80px;
+    min-width: max-content;
   }
+  .pipe-node { display: flex; flex-direction: column; align-items: center; gap: 8px; }
   .pipe-icon {
-    width: 44px; height: 44px;
-    border-radius: 10px;
+    width: 52px; height: 52px;
+    border-radius: 12px;
+    border: 1px solid var(--border2);
     display: flex; align-items: center; justify-content: center;
-    font-size: 18px;
-    border: 2px solid var(--border);
+    font-size: 20px;
     background: var(--surface2);
+    transition: transform 0.2s;
   }
-  .pipe-icon.done  { border-color: var(--green); background: rgba(34,197,94,0.1); }
-  .pipe-icon.warn  { border-color: var(--yellow); background: rgba(245,158,11,0.1); }
-  .pipe-label { font-size: 10px; color: var(--muted); text-align: center; max-width: 72px; line-height: 1.3; }
-  .pipe-arrow { color: var(--muted); font-size: 18px; padding: 0 4px; margin-top: -20px; }
+  .pipe-icon:hover { transform: scale(1.08); }
+  .pipe-icon.done { border-color: rgba(16,217,138,0.4); background: rgba(16,217,138,0.08); box-shadow: 0 0 16px rgba(16,217,138,0.1); }
+  .pipe-icon.warn { border-color: rgba(245,158,11,0.4); background: rgba(245,158,11,0.08); box-shadow: 0 0 16px rgba(245,158,11,0.1); }
+  .pipe-label { font-size: 10px; color: var(--muted); text-align: center; max-width: 70px; line-height: 1.4; font-weight: 500; }
+  .pipe-arrow { color: var(--muted2); font-size: 16px; padding: 0 6px; margin-bottom: 20px; }
 
-  /* ── section titles ── */
-  .section-title {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    margin-bottom: 12px;
-    margin-top: 28px;
-  }
-
-  /* ── tables ── */
-  .tbl-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 24px; }
+  /* ── TABLES ── */
+  .tbl-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 24px; }
   table { width: 100%; border-collapse: collapse; }
   th {
     background: var(--surface2);
-    color: var(--muted);
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    padding: 10px 14px;
+    padding: 11px 16px;
     text-align: left;
-    font-weight: 600;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
   }
-  td {
-    padding: 10px 14px;
-    border-top: 1px solid var(--border);
-    vertical-align: top;
-    font-size: 13px;
-  }
-  tr:hover td { background: var(--surface2); }
+  td { padding: 12px 16px; border-bottom: 1px solid var(--border); font-size: 13px; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(99,102,241,0.04); }
+
+  /* ── BC BADGE ── */
   .badge-bc {
     display: inline-block;
-    font-size: 10px; font-weight: 700;
-    padding: 2px 7px; border-radius: 4px;
-    background: rgba(99,102,241,0.2); color: #a5b4fc;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 5px;
+    background: rgba(99,102,241,0.15);
+    color: #818cf8;
     border: 1px solid rgba(99,102,241,0.3);
-    margin-right: 4px;
+    letter-spacing: 0.3px;
   }
-  .chip-green  { display:inline-block; font-size:10px; font-weight:700; padding:2px 7px; border-radius:4px; background:rgba(34,197,94,0.15); color:var(--green); border:1px solid rgba(34,197,94,0.3); }
-  .chip-yellow { display:inline-block; font-size:10px; font-weight:700; padding:2px 7px; border-radius:4px; background:rgba(245,158,11,0.15); color:var(--yellow); border:1px solid rgba(245,158,11,0.3); }
-  .chip-red    { display:inline-block; font-size:10px; font-weight:700; padding:2px 7px; border-radius:4px; background:rgba(239,68,68,0.15); color:var(--red); border:1px solid rgba(239,68,68,0.3); }
+  .chip-green  { display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:5px;background:rgba(16,217,138,0.12);color:var(--green);border:1px solid rgba(16,217,138,0.25); }
+  .chip-yellow { display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:5px;background:rgba(245,158,11,0.12);color:var(--yellow);border:1px solid rgba(245,158,11,0.25); }
+  .chip-red    { display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:5px;background:rgba(244,63,94,0.12);color:var(--red);border:1px solid rgba(244,63,94,0.25); }
 
+  /* ── CODE ── */
   code {
-    font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
-    font-size: 11.5px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 1px 5px;
-    color: #a5b4fc;
+    font-family: "SF Mono","Fira Code",monospace;
+    font-size: 12px;
+    background: var(--surface3);
+    border: 1px solid var(--border2);
+    border-radius: 5px;
+    padding: 1px 6px;
+    color: #94a3b8;
   }
 
-  /* ── test runner ── */
+  /* ── BUTTONS ── */
   .run-btn {
-    background: var(--accent);
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
     color: #fff;
     border: none;
-    border-radius: 8px;
-    padding: 10px 22px;
+    border-radius: 10px;
+    padding: 11px 24px;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    transition: opacity 0.15s;
+    transition: all 0.2s;
+    box-shadow: 0 4px 16px rgba(99,102,241,0.3);
+    letter-spacing: 0.2px;
   }
-  .run-btn:hover { opacity: 0.85; }
-  .run-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .run-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(99,102,241,0.4); }
+  .run-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  .migrate-btn {
+    background: linear-gradient(135deg, #059669, var(--green));
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 11px 24px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 16px rgba(16,217,138,0.25);
+    letter-spacing: 0.2px;
+  }
+  .migrate-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(16,217,138,0.35); }
+  .migrate-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  /* ── TEST RESULT BOX ── */
   .test-result-box {
-    margin-top: 16px;
+    margin-top: 20px;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 20px 24px;
+    border-radius: 12px;
+    padding: 24px 28px;
     display: none;
   }
-  .test-result-box.visible { display: block; }
-  .test-result-box .big-status { font-size: 24px; font-weight: 700; margin-bottom: 6px; }
+  .test-result-box.visible { display: block; animation: fadeIn 0.3s ease; }
+  .test-result-box .big-status { font-size: 26px; font-weight: 800; margin-bottom: 6px; letter-spacing: -0.5px; }
   .test-result-box .summary-text { color: var(--muted); font-size: 13px; }
 
-  /* ── usage map ── */
-  .usage-file-group { margin-bottom: 20px; }
-  .usage-file-name {
-    font-size: 12px; font-weight: 600; color: var(--blue);
-    margin-bottom: 6px;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .usage-site {
-    display: flex; gap: 10px; align-items: flex-start;
-    padding: 6px 10px;
-    border-left: 3px solid var(--border);
-    margin-bottom: 4px;
-    background: var(--surface);
-    border-radius: 0 6px 6px 0;
-  }
-  .usage-site .line-num { color: var(--muted); font-size: 11px; min-width: 36px; padding-top: 2px; }
-  .usage-site code { flex: 1; background: transparent; border: none; padding: 0; color: #fca5a5; font-size: 12px; }
-
-  /* ── markdown ── */
-  .md-box {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 24px 28px;
-    white-space: pre-wrap;
-    font-family: "SF Mono", "Fira Code", monospace;
-    font-size: 12.5px;
-    color: var(--text);
-    line-height: 1.7;
-    max-height: 600px;
-    overflow-y: auto;
-  }
-
-  /* ── bar chart ── */
-  .bar-chart { display: flex; flex-direction: column; gap: 8px; }
-  .bar-row { display: flex; align-items: center; gap: 10px; }
-  .bar-label { width: 66px; font-size: 11px; color: var(--muted); text-align: right; }
-  .bar-track { flex: 1; background: var(--surface2); border-radius: 4px; height: 18px; overflow: hidden; }
-  .bar-fill  { height: 100%; border-radius: 4px; background: var(--accent); transition: width 0.6s ease; }
-  .bar-count { font-size: 11px; color: var(--muted); min-width: 20px; }
-
-  /* ── attempt timeline ── */
-  .attempt-row { display:flex; align-items:center; gap:14px; margin-bottom:10px; }
-  .attempt-dot { width:14px; height:14px; border-radius:50%; flex-shrink:0; }
-  .attempt-dot.pass { background:var(--green); }
-  .attempt-dot.fail { background:var(--red); }
-  .attempt-label { font-size:13px; }
-
-  .spinner { display:inline-block; width:14px; height:14px; border:2px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin 0.7s linear infinite; vertical-align:middle; margin-right:6px; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  .loading-msg { color: var(--muted); font-size: 13px; padding: 32px 0; text-align:center; }
-
-  /* ── run migration panel ── */
-  .migrate-btn {
-    background: #16a34a;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 22px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: opacity 0.15s;
-    margin-right: 10px;
-  }
-  .migrate-btn:hover { opacity: 0.85; }
-  .migrate-btn:disabled { opacity: 0.45; cursor: not-allowed; }
-  .terminal-panel {
-    display: none;
+  /* ── TERMINAL PANEL ── */
+  .terminal-wrap {
     margin-top: 16px;
-    background: #0a0c12;
-    border: 1px solid var(--border);
-    border-radius: 10px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border2);
+    display: none;
+  }
+  .terminal-wrap.visible { display: block; animation: fadeIn 0.3s ease; }
+  .terminal-header {
+    background: var(--surface2);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .term-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .term-dot.r { background: #f43f5e; }
+  .term-dot.y { background: #f59e0b; }
+  .term-dot.g { background: #10d98a; }
+  .terminal-title { font-size: 11px; color: var(--muted); margin-left: 4px; font-family: "SF Mono", monospace; }
+  .terminal-panel {
+    background: #030507;
     padding: 16px 18px;
-    font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+    font-family: "SF Mono","Fira Code","Cascadia Code",monospace;
     font-size: 12px;
-    color: #b0f0b0;
-    line-height: 1.55;
-    max-height: 420px;
+    color: #7ee8a0;
+    line-height: 1.6;
+    max-height: 380px;
     overflow-y: auto;
     white-space: pre-wrap;
     word-break: break-all;
   }
-  .terminal-panel.visible { display: block; }
-  .terminal-panel .term-line-muted { color: var(--muted); }
-  .terminal-panel .term-line-analyst { color: #facc15; }
-  .terminal-panel .term-line-scanner { color: #38bdf8; }
-  .terminal-panel .term-line-migrator { color: #c084fc; }
-  .terminal-panel .term-line-verifier { color: #4ade80; }
-  .terminal-panel .term-line-error { color: #f87171; }
+  .term-line-muted    { color: #4a5568; }
+  .term-line-analyst  { color: #fbbf24; }
+  .term-line-scanner  { color: #38bdf8; }
+  .term-line-migrator { color: #c084fc; }
+  .term-line-verifier { color: #34d399; }
+  .term-line-error    { color: #f87171; }
+  .term-line-uplift   { color: #818cf8; font-weight: bold; }
+
+  /* ── AGENT GRID ── */
+  .agent-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+  .agent-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--ac, var(--accent));
+    border-radius: 12px;
+    padding: 16px 18px;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .agent-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+  .agent-num { font-size: 10px; font-weight: 800; color: var(--ac, var(--accent)); letter-spacing: 1px; margin-bottom: 5px; opacity: 0.9; }
+  .agent-name { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 8px; letter-spacing: -0.2px; }
+  .agent-desc { font-size: 11.5px; color: var(--muted); line-height: 1.55; margin-bottom: 10px; }
+  .agent-out { font-size: 10.5px; font-weight: 700; color: var(--ac, var(--accent)); font-family: "SF Mono", monospace; letter-spacing: 0.2px; opacity: 0.85; }
+
+  /* ── USAGE MAP ── */
+  .usage-file-group { margin-bottom: 20px; }
+  .usage-file-name {
+    font-size: 12px; font-weight: 600; color: var(--blue);
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 10px;
+    background: rgba(59,130,246,0.06);
+    border-radius: 7px;
+    border: 1px solid rgba(59,130,246,0.12);
+  }
+  .usage-site {
+    display: flex; gap: 10px; align-items: flex-start;
+    padding: 7px 12px;
+    border-left: 2px solid var(--border2);
+    margin-bottom: 4px;
+    background: var(--surface);
+    border-radius: 0 8px 8px 0;
+    transition: border-color 0.15s;
+  }
+  .usage-site:hover { border-left-color: var(--accent); }
+  .usage-site .line-num { color: var(--muted2); font-size: 11px; min-width: 36px; padding-top: 2px; font-family: monospace; }
+  .usage-site code { flex: 1; background: transparent; border: none; padding: 0; color: #fca5a5; font-size: 12px; }
+
+  /* ── MARKDOWN BOX ── */
+  .md-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+    white-space: pre-wrap;
+    font-family: "SF Mono","Fira Code",monospace;
+    font-size: 12.5px;
+    color: #94a3b8;
+    line-height: 1.8;
+    max-height: 600px;
+    overflow-y: auto;
+  }
+
+  /* ── BAR CHART ── */
+  .bar-chart { display: flex; flex-direction: column; gap: 10px; }
+  .bar-row { display: flex; align-items: center; gap: 12px; }
+  .bar-label { width: 70px; font-size: 11px; color: var(--muted); text-align: right; }
+  .bar-track { flex: 1; background: var(--surface3); border-radius: 6px; height: 20px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 6px; transition: width 0.8s cubic-bezier(0.16,1,0.3,1); }
+  .bar-count { font-size: 12px; color: var(--text); min-width: 24px; font-weight: 600; }
+
+  /* ── ATTEMPT TIMELINE ── */
+  .attempt-row { display:flex; align-items:center; gap:14px; margin-bottom:12px; padding:12px 16px; background:var(--surface); border-radius:10px; border:1px solid var(--border); }
+  .attempt-dot { width:14px; height:14px; border-radius:50%; flex-shrink:0; box-shadow: 0 0 8px currentColor; }
+  .attempt-dot.pass { background:var(--green); color:var(--green); }
+  .attempt-dot.fail { background:var(--red); color:var(--red); }
+  .attempt-label { font-size:13px; }
+
+  /* ── SPINNER ── */
+  .spinner { display:inline-block; width:13px; height:13px; border:2px solid rgba(255,255,255,0.2); border-top-color:#fff; border-radius:50%; animation:spin 0.6s linear infinite; vertical-align:middle; margin-right:7px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-msg { color: var(--muted); font-size: 13px; padding: 40px 0; text-align:center; }
+
+  /* ── MIGRATION RUNNER CARD ── */
+  .runner-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 24px;
+    margin-bottom: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+  .runner-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--green2), var(--green), var(--cyan));
+  }
+  .runner-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .runner-card p { color: var(--muted); font-size: 12.5px; margin-bottom: 16px; line-height: 1.5; }
+
+  /* ── BC CARDS ── */
+  .bc-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 12px;
+    border-left: 3px solid var(--card-color, var(--accent));
+    transition: transform 0.15s, border-color 0.15s;
+  }
+  .bc-card:hover { transform: translateX(3px); }
+  .bc-card-header { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+  .bc-card-title { font-size: 14px; font-weight: 600; }
+  .bc-card-conf { margin-left:auto; font-size:10px; color:var(--muted); }
+  .bc-card-desc { color:var(--muted); font-size:12.5px; margin-bottom:12px; line-height:1.5; }
+  .bc-patterns { display:flex; gap:10px; flex-wrap:wrap; }
+  .bc-pattern { flex:1; min-width:200px; }
+  .bc-pattern-label { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:5px; }
+  .bc-pattern-label.old { color:var(--red); }
+  .bc-pattern-label.new { color:var(--green); }
+  .bc-pattern code { display:block; padding:8px 12px; font-size:11.5px; border-radius:7px; white-space:pre-wrap; }
+  .bc-pattern.old code { background:rgba(244,63,94,0.07); border-color:rgba(244,63,94,0.2); color:#fca5a5; }
+  .bc-pattern.new code { background:rgba(16,217,138,0.07); border-color:rgba(16,217,138,0.2); color:#6ee7b7; }
+  .bc-hint { margin-top:10px; font-size:11px; color:var(--muted2); }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--muted2); }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">Up<span>Lift</span></div>
+  <div class="logo">Up&#x2191;Lift</div>
   <div class="tagline">Agentic pydantic v1 → v2 migration · IBM TechXchange 2026</div>
-  <div class="badge" id="header-badge">Loading…</div>
+  <div class="header-badge">
+    <span class="ibm-badge">IBM Bob + watsonx</span>
+    <span class="badge-pill" id="header-badge">Loading…</span>
+  </div>
 </header>
 
 <nav>
@@ -330,68 +509,117 @@
       <div class="loading-msg">Loading…</div>
     </div>
 
-    <!-- pipeline -->
-    <div class="section-title">Pipeline</div>
-    <div class="pipeline">
-      <div class="pipe-node">
-        <div class="pipe-icon done">📄</div>
-        <div class="pipe-label">migration-guide.md</div>
+    <div class="section-title">Agentic Pipeline</div>
+
+    <!-- Agent role cards -->
+    <div class="agent-grid">
+      <div class="agent-card" style="--ac:#f59e0b">
+        <div class="agent-num">01</div>
+        <div class="agent-name">changelog-analyst</div>
+        <div class="agent-desc">Reads <code>docs/migration-guide.md</code> via Granite — extracts 6 structured breaking changes with detection hints</div>
+        <div class="agent-out">→ breaking-changes.json</div>
       </div>
-      <div class="pipe-arrow">→</div>
-      <div class="pipe-node">
-        <div class="pipe-icon done">🔍</div>
-        <div class="pipe-label">changelog-analyst</div>
+      <div class="agent-card" style="--ac:#38bdf8">
+        <div class="agent-num">02</div>
+        <div class="agent-name">usage-scanner</div>
+        <div class="agent-desc">Scans every <code>.py</code> file in <code>src/</code> and <code>tests/</code> matching each detection hint — maps 15 usage sites</div>
+        <div class="agent-out">→ usage-map.json</div>
       </div>
-      <div class="pipe-arrow">→</div>
-      <div class="pipe-node">
-        <div class="pipe-icon done">📋</div>
-        <div class="pipe-label">breaking-changes.json</div>
+      <div class="agent-card" style="--ac:#a855f7">
+        <div class="agent-num">03A</div>
+        <div class="agent-name">code-migrator A</div>
+        <div class="agent-desc">Patches <code>models.py</code> — validators, Config, Field kwargs. Runs in parallel with Migrator B</div>
+        <div class="agent-out">→ models.py patched</div>
       </div>
-      <div class="pipe-arrow">→</div>
-      <div class="pipe-node">
-        <div class="pipe-icon done">🗺️</div>
-        <div class="pipe-label">usage-scanner</div>
+      <div class="agent-card" style="--ac:#818cf8">
+        <div class="agent-num">03B</div>
+        <div class="agent-name">code-migrator B</div>
+        <div class="agent-desc">Patches <code>settings.py</code>, <code>service.py</code>, <code>requirements.txt</code> — BaseSettings, method renames</div>
+        <div class="agent-out">→ 3 files patched</div>
       </div>
-      <div class="pipe-arrow">→</div>
-      <div class="pipe-node">
-        <div class="pipe-icon done">📍</div>
-        <div class="pipe-label">usage-map.json</div>
+      <div class="agent-card" style="--ac:#10d98a">
+        <div class="agent-num">04</div>
+        <div class="agent-name">verifier</div>
+        <div class="agent-desc">Runs <code>pytest</code>, maps failures to BC IDs, auto-fixes BC-006 <code>TypeError→ValidationError</code>, retries until green</div>
+        <div class="agent-out">→ 77/77 green</div>
       </div>
-      <div class="pipe-arrow">→</div>
-      <div class="pipe-node">
-        <div class="pipe-icon done">⚙️</div>
-        <div class="pipe-label">migrator A models.py</div>
-      </div>
-      <div class="pipe-arrow">‖</div>
-      <div class="pipe-node">
-        <div class="pipe-icon done">⚙️</div>
-        <div class="pipe-label">migrator B service+settings</div>
-      </div>
-      <div class="pipe-arrow">→</div>
-      <div class="pipe-node">
-        <div class="pipe-icon warn">🧪</div>
-        <div class="pipe-label">verifier pytest loop</div>
-      </div>
-      <div class="pipe-arrow">→</div>
-      <div class="pipe-node">
-        <div class="pipe-icon done">✅</div>
-        <div class="pipe-label">UPGRADE_REPORT.md</div>
+      <div class="agent-card" style="--ac:#06b6d4">
+        <div class="agent-num">05</div>
+        <div class="agent-name">Orchestrate agent</div>
+        <div class="agent-desc">IBM watsonx Orchestrate reads the upgrade report via Granite and requires engineering manager <strong>approve / reject</strong></div>
+        <div class="agent-out">→ human gate</div>
       </div>
     </div>
 
-    <!-- run migration -->
-    <div class="section-title" style="margin-top:28px;">Live Migration Runner</div>
-    <p style="color:var(--muted);font-size:13px;margin-bottom:14px;">
-      Runs <code>python -m uplift upgrade pydantic --force</code> — regenerates reports from scratch and streams every pipeline stage live.
-    </p>
-    <button class="migrate-btn" id="migrate-btn" onclick="runMigration()">⚡ Run migration (--force)</button>
-    <div class="terminal-panel" id="terminal-panel"></div>
+    <!-- Flow diagram -->
+    <div class="pipeline-wrap" style="margin-top:14px;">
+      <div class="pipeline">
+        <div class="pipe-node">
+          <div class="pipe-icon done" style="font-size:15px;font-weight:700;color:#94a3b8;">MD</div>
+          <div class="pipe-label">migration-guide.md</div>
+        </div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-node">
+          <div class="pipe-icon done" style="font-size:13px;font-weight:800;color:#f59e0b;">CA</div>
+          <div class="pipe-label">changelog-analyst</div>
+        </div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-node">
+          <div class="pipe-icon done" style="font-size:13px;font-weight:700;color:#94a3b8;">{}</div>
+          <div class="pipe-label">breaking-changes.json</div>
+        </div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-node">
+          <div class="pipe-icon done" style="font-size:13px;font-weight:800;color:#38bdf8;">US</div>
+          <div class="pipe-label">usage-scanner</div>
+        </div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-node">
+          <div class="pipe-icon done" style="font-size:13px;font-weight:700;color:#94a3b8;">{}</div>
+          <div class="pipe-label">usage-map.json</div>
+        </div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-node">
+          <div class="pipe-icon done" style="font-size:11px;font-weight:800;color:#a855f7;">03A</div>
+          <div class="pipe-label">migrator A models.py</div>
+        </div>
+        <div class="pipe-arrow" style="color:#a855f7;font-weight:700;">‖</div>
+        <div class="pipe-node">
+          <div class="pipe-icon done" style="font-size:11px;font-weight:800;color:#818cf8;">03B</div>
+          <div class="pipe-label">migrator B service+settings</div>
+        </div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-node">
+          <div class="pipe-icon warn" style="font-size:13px;font-weight:800;color:#f59e0b;">VF</div>
+          <div class="pipe-label">verifier pytest loop</div>
+        </div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-node">
+          <div class="pipe-icon done" style="font-size:11px;font-weight:800;color:#10d98a;">OK</div>
+          <div class="pipe-label">UPGRADE_REPORT.md</div>
+        </div>
+      </div>
+    </div>
 
-    <!-- test attempts -->
-    <div class="section-title" style="margin-top:28px;">Verifier Attempts</div>
+    <div class="section-title">Live Migration Runner</div>
+    <div class="runner-card">
+      <h3>⚡ Run full pipeline from scratch</h3>
+      <p>Executes <code>python -m uplift upgrade pydantic --force</code> — reads the migration guide live via Granite, scans all usage sites, runs both migrators in parallel, and verifies with pytest. Every stage streams below in real-time.</p>
+      <button class="migrate-btn" id="migrate-btn" onclick="runMigration()">⚡ Run migration (--force)</button>
+    </div>
+    <div class="terminal-wrap" id="terminal-wrap">
+      <div class="terminal-header">
+        <div class="term-dot r"></div>
+        <div class="term-dot y"></div>
+        <div class="term-dot g"></div>
+        <div class="terminal-title">uplift upgrade pydantic --force</div>
+      </div>
+      <div class="terminal-panel" id="terminal-panel"></div>
+    </div>
+
+    <div class="section-title">Verifier Attempts</div>
     <div id="attempts-section"><div class="loading-msg">Loading…</div></div>
 
-    <!-- files modified -->
     <div class="section-title">Files Modified</div>
     <div class="tbl-wrap">
       <table>
@@ -412,10 +640,8 @@
 
   <!-- ══════════════════════════════════════════════ USAGE MAP ══ -->
   <div id="tab-usage" class="tab-panel">
-    <div class="section-title">Usage Sites Found by Scanner</div>
-
-    <div style="margin-bottom:20px;">
-      <div class="section-title" style="margin-top:0;">Sites per Breaking Change</div>
+    <div class="section-title">Sites per Breaking Change</div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:8px;">
       <div class="bar-chart" id="usage-bar-chart"><div class="loading-msg">Loading…</div></div>
     </div>
 
@@ -426,13 +652,15 @@
   <!-- ══════════════════════════════════════════════ TEST RUNNER ══ -->
   <div id="tab-tests" class="tab-panel">
     <div class="section-title">Live Test Runner</div>
-    <p style="color:var(--muted);font-size:13px;margin-bottom:16px;">
-      Runs <code>python -m pytest --tb=no -q</code> against the current repo state.
-    </p>
-    <button class="run-btn" id="run-btn" onclick="runTests()">▶ Run pytest now</button>
-    <div class="test-result-box" id="test-result-box">
-      <div class="big-status" id="test-status"></div>
-      <div class="summary-text" id="test-summary"></div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px 28px;">
+      <p style="color:var(--muted);font-size:13px;margin-bottom:20px;line-height:1.6;">
+        Runs <code>python -m pytest --tb=no -q</code> against the current repo state and reports pass/fail instantly.
+      </p>
+      <button class="run-btn" id="run-btn" onclick="runTests()">▶ Run pytest now</button>
+      <div class="test-result-box" id="test-result-box">
+        <div class="big-status" id="test-status"></div>
+        <div class="summary-text" id="test-summary"></div>
+      </div>
     </div>
   </div>
 
@@ -456,47 +684,74 @@ function switchTab(name, btn) {
 // ── fetch helpers ──────────────────────────────────────────────────────────
 const api = path => fetch(path).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
 
-// ── BC id → colour class ───────────────────────────────────────────────────
+// ── BC id → colour ─────────────────────────────────────────────────────────
 const bcColour = id => {
-  const map = { 'BC-001':'#f59e0b','BC-002':'#6366f1','BC-003':'#22c55e','BC-004':'#3b82f6','BC-005':'#8b5cf6','BC-006':'#ef4444' };
-  return map[id] || '#7c84a6';
+  const map = { 'BC-001':'#f59e0b','BC-002':'#818cf8','BC-003':'#10d98a','BC-004':'#38bdf8','BC-005':'#a855f7','BC-006':'#f43f5e' };
+  return map[id] || '#6b7a99';
 };
 
 // ── Overview ───────────────────────────────────────────────────────────────
 function buildOverview(report) {
-  // stat cards
-  const totalSites = 15;
-  const statusColor = report.final_status === 'green' ? 'green' : 'red';
-  const statusText  = report.final_status === 'green' ? '✅ GREEN' : '❌ FAILED';
+  const isGreen = report.final_status === 'green';
+  const statusColor = isGreen ? 'c-green' : 'c-red';
+  const statusText  = isGreen ? '✅ GREEN' : '❌ FAILED';
+
   document.getElementById('stat-grid').innerHTML = `
-    <div class="stat-card"><div class="label">Final Status</div><div class="value ${statusColor}">${statusText}</div><div class="sub">77 / 77 tests</div></div>
-    <div class="stat-card"><div class="label">Breaking Changes</div><div class="value blue">6</div><div class="sub">BC-001 – BC-006</div></div>
-    <div class="stat-card"><div class="label">Usage Sites</div><div class="value purple">${totalSites}</div><div class="sub">across src/ + tests/</div></div>
-    <div class="stat-card"><div class="label">Files Patched</div><div class="value yellow">${report.files_modified.length}</div><div class="sub">by 2 migrators</div></div>
-    <div class="stat-card"><div class="label">Verifier Attempts</div><div class="value">${report.test_runs.length}</div><div class="sub">attempt 2 green</div></div>
-    <div class="stat-card"><div class="label">Human-Review Flags</div><div class="value yellow">${report.needs_human_review.length}</div><div class="sub">BC-006 auto-fixed</div></div>
+    <div class="stat-card" style="--card-accent:linear-gradient(90deg,var(--green2),var(--green))">
+      <span class="icon">🏆</span>
+      <div class="label">Final Status</div>
+      <div class="value ${statusColor}">${isGreen ? 'GREEN' : 'FAIL'}</div>
+      <div class="sub">77 / 77 tests</div>
+    </div>
+    <div class="stat-card" style="--card-accent:linear-gradient(90deg,#2563eb,#38bdf8)">
+      <span class="icon">🔬</span>
+      <div class="label">Breaking Changes</div>
+      <div class="value c-blue">6</div>
+      <div class="sub">BC-001 – BC-006</div>
+    </div>
+    <div class="stat-card" style="--card-accent:linear-gradient(90deg,#7c3aed,#a855f7)">
+      <span class="icon">📍</span>
+      <div class="label">Usage Sites</div>
+      <div class="value c-purple">15</div>
+      <div class="sub">across src/ + tests/</div>
+    </div>
+    <div class="stat-card" style="--card-accent:linear-gradient(90deg,#d97706,#f59e0b)">
+      <span class="icon">📝</span>
+      <div class="label">Files Patched</div>
+      <div class="value c-yellow">${report.files_modified.length}</div>
+      <div class="sub">by 2 parallel migrators</div>
+    </div>
+    <div class="stat-card" style="--card-accent:linear-gradient(90deg,#0891b2,#06b6d4)">
+      <span class="icon">🔄</span>
+      <div class="label">Verifier Attempts</div>
+      <div class="value c-cyan">${report.test_runs.length}</div>
+      <div class="sub">attempt 2 green</div>
+    </div>
+    <div class="stat-card" style="--card-accent:linear-gradient(90deg,var(--accent2),var(--accent))">
+      <span class="icon">👁️</span>
+      <div class="label">Human Review</div>
+      <div class="value c-accent">${report.needs_human_review.length}</div>
+      <div class="sub">BC-006 auto-fixed</div>
+    </div>
   `;
 
-  // header badge
-  document.getElementById('header-badge').textContent =
-    report.final_status === 'green' ? '77/77 GREEN' : 'FAILED';
+  const badge = document.getElementById('header-badge');
+  badge.textContent = isGreen ? '77/77 GREEN' : 'FAILED';
+  badge.className = 'badge-pill' + (isGreen ? '' : ' red');
 
-  // attempts
-  const attemptsHtml = report.test_runs.map((r, i) => `
+  const attemptsHtml = report.test_runs.map(r => `
     <div class="attempt-row">
       <div class="attempt-dot ${r.passed ? 'pass' : 'fail'}"></div>
       <div class="attempt-label">
         <strong>Attempt ${r.attempt}</strong> —
         ${r.passed
-          ? '<span class="chip-green">PASSED</span> 77 / 77'
-          : `<span class="chip-red">FAILED</span> ${r.failure_count} failure${r.failure_count !== 1 ? 's' : ''}`}
-        ${!r.passed ? ' · BC-006 <code>TypeError → ValidationError</code> auto-fixed' : ''}
+          ? '<span class="chip-green">PASSED</span> &nbsp;77 / 77 tests'
+          : `<span class="chip-red">FAILED</span> &nbsp;${r.failure_count} failure${r.failure_count !== 1 ? 's' : ''} · BC-006 <code>TypeError → ValidationError</code> auto-fixed`}
       </div>
     </div>
   `).join('');
   document.getElementById('attempts-section').innerHTML = attemptsHtml;
 
-  // files modified — figure out BC IDs per file from changes array
   const fileBCs = {};
   for (const c of report.changes) {
     if (!fileBCs[c.file]) fileBCs[c.file] = new Set();
@@ -508,8 +763,8 @@ function buildOverview(report) {
   }
   const filesHtml = report.files_modified.map(f => {
     const bcs = fileBCs[f] ? [...fileBCs[f]].sort() : [];
-    const badges = bcs.map(id => `<span class="badge-bc" style="background:rgba(99,102,241,0.15);color:#a5b4fc;">${id}</span>`).join('');
-    return `<tr><td><code>${f}</code></td><td>${badges || '<span style="color:var(--muted)">—</span>'}</td></tr>`;
+    const badges = bcs.map(id => `<span class="badge-bc" style="background:rgba(99,102,241,0.12);color:#818cf8;border-color:rgba(99,102,241,0.25);">${id}</span>`).join(' ');
+    return `<tr><td><code>${f}</code></td><td>${badges || '<span style="color:var(--muted2)">—</span>'}</td></tr>`;
   }).join('');
   document.getElementById('files-tbody').innerHTML = filesHtml;
 }
@@ -517,25 +772,25 @@ function buildOverview(report) {
 // ── Breaking Changes ───────────────────────────────────────────────────────
 function buildBreaking(bcs) {
   const html = bcs.map(bc => `
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:14px;border-left:4px solid ${bcColour(bc.id)};">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-        <span class="badge-bc" style="font-size:12px;padding:3px 9px;">${bc.id}</span>
-        <strong style="font-size:14px;">${bc.title}</strong>
-        <span style="margin-left:auto;font-size:11px;color:var(--muted);">confidence ≥ ${Math.round(bc.confidence_required * 100)}%</span>
+    <div class="bc-card" style="--card-color:${bcColour(bc.id)}">
+      <div class="bc-card-header">
+        <span class="badge-bc" style="background:${bcColour(bc.id)}22;color:${bcColour(bc.id)};border-color:${bcColour(bc.id)}44;">${bc.id}</span>
+        <span class="bc-card-title">${bc.title}</span>
+        <span class="bc-card-conf">confidence ≥ ${Math.round(bc.confidence_required * 100)}%</span>
       </div>
-      <p style="color:var(--muted);font-size:13px;margin-bottom:10px;">${bc.description}</p>
-      <div style="display:flex;gap:8px;align-items:flex-start;flex-wrap:wrap;">
-        <div style="flex:1;min-width:220px;">
-          <div style="font-size:10px;color:var(--red);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;">v1 (old)</div>
-          <code style="display:block;padding:6px 10px;background:rgba(239,68,68,0.08);border-color:rgba(239,68,68,0.25);color:#fca5a5;">${escHtml(bc.old_pattern)}</code>
+      <div class="bc-card-desc">${bc.description}</div>
+      <div class="bc-patterns">
+        <div class="bc-pattern old">
+          <div class="bc-pattern-label old">v1 — old</div>
+          <code>${escHtml(bc.old_pattern)}</code>
         </div>
-        <div style="padding-top:20px;color:var(--muted);font-size:16px;">→</div>
-        <div style="flex:1;min-width:220px;">
-          <div style="font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;">v2 (new)</div>
-          <code style="display:block;padding:6px 10px;background:rgba(34,197,94,0.08);border-color:rgba(34,197,94,0.25);color:#86efac;">${escHtml(bc.new_pattern)}</code>
+        <div style="padding-top:20px;color:var(--muted);font-size:18px;">→</div>
+        <div class="bc-pattern new">
+          <div class="bc-pattern-label new">v2 — new</div>
+          <code>${escHtml(bc.new_pattern)}</code>
         </div>
       </div>
-      <div style="margin-top:8px;font-size:11px;color:var(--muted);">Detection hint: <code>${escHtml(bc.detection_hint)}</code></div>
+      <div class="bc-hint">Detection: <code>${escHtml(bc.detection_hint)}</code></div>
     </div>
   `).join('');
   document.getElementById('bc-list').innerHTML = html;
@@ -543,21 +798,19 @@ function buildBreaking(bcs) {
 
 // ── Usage Map ─────────────────────────────────────────────────────────────
 function buildUsage(usageMap) {
-  // bar chart
+  const maxVal = Math.max(...Object.values(usageMap).map(s => s.length), 1);
   const barHtml = Object.entries(usageMap).map(([id, sites]) => {
-    const max = 6;
-    const pct = Math.round((sites.length / max) * 100);
+    const pct = Math.round((sites.length / maxVal) * 100);
     return `
       <div class="bar-row">
-        <div class="bar-label"><span class="badge-bc">${id}</span></div>
-        <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${bcColour(id)};"></div></div>
+        <div class="bar-label"><span class="badge-bc" style="background:${bcColour(id)}22;color:${bcColour(id)};border-color:${bcColour(id)}44;">${id}</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:linear-gradient(90deg,${bcColour(id)}99,${bcColour(id)});"></div></div>
         <div class="bar-count">${sites.length}</div>
       </div>
     `;
   }).join('');
   document.getElementById('usage-bar-chart').innerHTML = barHtml;
 
-  // detail — group by file
   const byFile = {};
   for (const [id, sites] of Object.entries(usageMap)) {
     for (const site of sites) {
@@ -573,7 +826,7 @@ function buildUsage(usageMap) {
       ${sites.map(s => `
         <div class="usage-site">
           <span class="line-num">L${s.line}</span>
-          <span class="badge-bc" style="flex-shrink:0;">${s.bc_id}</span>
+          <span class="badge-bc" style="flex-shrink:0;background:${bcColour(s.bc_id)}22;color:${bcColour(s.bc_id)};border-color:${bcColour(s.bc_id)}44;">${s.bc_id}</span>
           <code>${escHtml(s.snippet.trim())}</code>
         </div>
       `).join('')}
@@ -592,17 +845,17 @@ function runTests() {
   const btn = document.getElementById('run-btn');
   const box = document.getElementById('test-result-box');
   btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span> Running…';
+  btn.innerHTML = '<span class="spinner"></span>Running…';
   box.classList.remove('visible');
 
   api('/api/run-tests').then(result => {
     document.getElementById('test-status').innerHTML = result.passed
-      ? '<span class="green">✅ PASSED</span>'
-      : '<span class="red">❌ FAILED</span>';
+      ? '<span class="c-green">✅ PASSED</span>'
+      : '<span class="c-red">❌ FAILED</span>';
     document.getElementById('test-summary').textContent = result.summary;
     box.classList.add('visible');
   }).catch(err => {
-    document.getElementById('test-status').innerHTML = '<span class="red">Error</span>';
+    document.getElementById('test-status').innerHTML = '<span class="c-red">Error</span>';
     document.getElementById('test-summary').textContent = String(err);
     box.classList.add('visible');
   }).finally(() => {
@@ -611,37 +864,26 @@ function runTests() {
   });
 }
 
-// ── util ───────────────────────────────────────────────────────────────────
-function escHtml(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
 // ── Live migration runner ─────────────────────────────────────────────────
 function runMigration() {
   const btn = document.getElementById('migrate-btn');
+  const wrap = document.getElementById('terminal-wrap');
   const panel = document.getElementById('terminal-panel');
 
   btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span> Running…';
+  btn.innerHTML = '<span class="spinner"></span>Running pipeline…';
   panel.innerHTML = '';
-  panel.classList.add('visible');
+  wrap.classList.add('visible');
 
   fetch('/api/run-migration', { method: 'POST' })
     .then(resp => {
-      if (resp.status === 409) {
-        appendLine(panel, '[dashboard] Another migration is already running. Please wait.', 'error');
-        return null;
-      }
-      if (!resp.ok) {
-        appendLine(panel, `[dashboard] Server error: ${resp.status}`, 'error');
-        return null;
-      }
+      if (resp.status === 409) { appendLine(panel, '[dashboard] Another migration is already running.', 'error'); return null; }
+      if (!resp.ok) { appendLine(panel, `[dashboard] Server error: ${resp.status}`, 'error'); return null; }
       return readStream(resp, panel);
     })
     .then(done => {
       if (done !== null) {
-        appendLine(panel, '[dashboard] Migration complete — refreshing reports…', 'muted');
-        // Reload all report widgets so judges see updated data
+        appendLine(panel, '[dashboard] Migration complete — refreshing widgets…', 'muted');
         return Promise.all([
           api('/api/upgrade-report'),
           api('/api/breaking-changes'),
@@ -652,15 +894,11 @@ function runMigration() {
           buildBreaking(bcs);
           buildUsage(usageMap);
           buildReport(md);
-          appendLine(panel, '[dashboard] Widgets refreshed.', 'muted');
-        }).catch(err => {
-          appendLine(panel, `[dashboard] Refresh failed: ${err}`, 'error');
-        });
+          appendLine(panel, '[dashboard] All widgets refreshed. ✅', 'verifier');
+        }).catch(err => appendLine(panel, `[dashboard] Refresh failed: ${err}`, 'error'));
       }
     })
-    .catch(err => {
-      appendLine(panel, `[dashboard] Fetch error: ${err}`, 'error');
-    })
+    .catch(err => appendLine(panel, `[dashboard] Fetch error: ${err}`, 'error'))
     .finally(() => {
       btn.disabled = false;
       btn.innerHTML = '⚡ Run migration (--force)';
@@ -671,16 +909,13 @@ function readStream(resp, panel) {
   const reader = resp.body.getReader();
   const decoder = new TextDecoder();
   let buf = '';
-
   function pump() {
     return reader.read().then(({ done, value }) => {
       if (done) return;
       buf += decoder.decode(value, { stream: true });
       const lines = buf.split('\n');
-      buf = lines.pop(); // keep incomplete last line in buffer
-      for (const line of lines) {
-        if (line.trim()) appendLine(panel, line);
-      }
+      buf = lines.pop();
+      for (const line of lines) { if (line.trim()) appendLine(panel, line); }
       return pump();
     });
   }
@@ -691,11 +926,13 @@ function appendLine(panel, text, forceClass) {
   const div = document.createElement('div');
   let cls = forceClass || '';
   if (!cls) {
-    if (text.startsWith('[analyst]'))  cls = 'analyst';
+    if (text.startsWith('[uplift]'))    cls = 'uplift';
+    else if (text.startsWith('[analyst]'))  cls = 'analyst';
     else if (text.startsWith('[scanner]')) cls = 'scanner';
     else if (text.startsWith('[migrator')) cls = 'migrator';
     else if (text.startsWith('[verifier]')) cls = 'verifier';
-    else if (text.startsWith('[error]') || text.includes('Error') || text.includes('FAILED')) cls = 'error';
+    else if (text.startsWith('[dashboard]')) cls = 'muted';
+    else if (text.includes('Error') || text.includes('FAILED') || text.startsWith('[error]')) cls = 'error';
   }
   if (cls) div.className = `term-line-${cls}`;
   div.textContent = text;
@@ -703,7 +940,12 @@ function appendLine(panel, text, forceClass) {
   panel.scrollTop = panel.scrollHeight;
 }
 
-// ── bootstrap — load all data in parallel ─────────────────────────────────
+// ── util ───────────────────────────────────────────────────────────────────
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── bootstrap ─────────────────────────────────────────────────────────────
 Promise.all([
   api('/api/upgrade-report'),
   api('/api/breaking-changes'),
@@ -715,11 +957,12 @@ Promise.all([
   buildUsage(usageMap);
   buildReport(md);
 }).catch(err => {
-  document.body.innerHTML = `<div style="padding:40px;color:#ef4444;font-family:monospace;">
-    Failed to load data from backend.<br><br>
-    Make sure the server is running:<br>
-    <code>python dashboard/server.py</code><br><br>
-    Error: ${err}
+  document.body.innerHTML = `<div style="padding:60px;color:#f43f5e;font-family:monospace;max-width:600px;margin:0 auto;">
+    <div style="font-size:32px;margin-bottom:16px;">⚠️</div>
+    <div style="font-size:16px;font-weight:700;margin-bottom:12px;">Failed to load dashboard data</div>
+    <div style="color:#6b7a99;font-size:13px;margin-bottom:20px;">Make sure the server is running:</div>
+    <code style="display:block;background:#0e1420;border:1px solid #1e2d47;border-radius:8px;padding:16px;color:#10d98a;font-size:13px;">python dashboard/server.py</code>
+    <div style="margin-top:16px;color:#4a5568;font-size:12px;">Error: ${err}</div>
   </div>`;
 });
 </script>

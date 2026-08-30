@@ -2,97 +2,376 @@
   "target": "pydantic",
   "from_version": "1.x",
   "to_version": "2.x",
-  "files_modified": [
-    "src/uplift_demo/models.py",
-    "src/uplift_demo/service.py",
-    "src/uplift_demo/settings.py",
-    "requirements.txt",
-    "tests/test_models.py"
-  ],
-  "changes": [
-    {
-      "bc_id": "BC-001",
-      "file": "src/uplift_demo/settings.py",
-      "line": 2,
-      "description": "Replaced `from pydantic import BaseSettings` with `from pydantic_settings import BaseSettings, SettingsConfigDict`; replaced `class Config: env_prefix` with `model_config = SettingsConfigDict(env_prefix=...)`",
-      "applied": true
-    },
-    {
-      "bc_id": "BC-001",
-      "file": "requirements.txt",
-      "line": 2,
-      "description": "Added `pydantic-settings>=2` dependency; upgraded pydantic pin to `>=2`",
-      "applied": true
-    },
-    {
-      "bc_id": "BC-002",
-      "file": "src/uplift_demo/models.py",
-      "line": 4,
-      "description": "Replaced import: removed `validator`, `root_validator`; added `field_validator`, `model_validator`, `ConfigDict`",
-      "applied": true
-    },
-    {
-      "bc_id": "BC-002",
-      "file": "src/uplift_demo/models.py",
-      "line": 13,
-      "description": "@validator(\"name\") replaced with @field_validator(\"name\") + @classmethod on Customer.strip_name",
-      "applied": true
-    },
-    {
-      "bc_id": "BC-002",
-      "file": "src/uplift_demo/models.py",
-      "line": 35,
-      "description": "@validator(\"order_id\") replaced with @field_validator(\"order_id\") + @classmethod on Order.order_id_prefix",
-      "applied": true
-    },
-    {
-      "bc_id": "BC-002",
-      "file": "src/uplift_demo/models.py",
-      "line": 43,
-      "description": "@root_validator replaced with @model_validator(mode=\"after\"); body updated from `values` dict to `self` model instance; return changed from `values` to `self`",
-      "applied": true
-    },
-    {
-      "bc_id": "BC-003",
-      "file": "src/uplift_demo/models.py",
-      "line": 24,
-      "description": "OrderItem inner `class Config: allow_mutation = False` replaced with `model_config = ConfigDict(frozen=True)`",
-      "applied": true
-    },
-    {
-      "bc_id": "BC-004",
-      "file": "src/uplift_demo/models.py",
-      "line": 9,
-      "description": "Field kwarg `regex=` renamed to `pattern=` on Customer.email",
-      "applied": true
-    },
-    {
-      "bc_id": "BC-004",
-      "file": "src/uplift_demo/models.py",
-      "line": 30,
-      "description": "Field kwarg `min_items=1` renamed to `min_length=1` on Order.items",
-      "applied": true
-    },
-    {
-      "bc_id": "BC-005",
-      "file": "src/uplift_demo/service.py",
-      "line": 10,
-      "description": "`.parse_obj()` → `model_validate()`, `.parse_raw()` → `model_validate_json()`, `.dict()` → `model_dump()`, `.json()` → `model_dump_json()`, `.copy()` → `model_copy()`, `.schema()` → `model_json_schema()`",
-      "applied": true
-    }
-  ],
+  "files_modified": [],
+  "changes": [],
   "needs_human_review": [
+    {
+      "bc_id": "BC-006",
+      "file": "src/uplift/analyst.py",
+      "line": 53,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "src/uplift/migrator.py",
+      "line": 323,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "src/uplift/verifier.py",
+      "line": 48,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "src/uplift/verifier.py",
+      "line": 73,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "src/uplift/verifier.py",
+      "line": 75,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
     {
       "bc_id": "BC-006",
       "file": "tests/test_models.py",
       "line": 58,
-      "reason": "Behavioral: frozen=True in pydantic v2 raises pydantic.ValidationError on mutation instead of TypeError (v1 allow_mutation=False). Test assertion updated from pytest.raises(TypeError) to pytest.raises(ValidationError).",
-      "status": "auto-applied"
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "tests/test_uplift_orchestrator.py",
+      "line": 74,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "tests/test_uplift_orchestrator.py",
+      "line": 75,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "tests/test_uplift_orchestrator.py",
+      "line": 256,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "tests/test_uplift_orchestrator.py",
+      "line": 356,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "tests/test_uplift_orchestrator.py",
+      "line": 374,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "tests/test_uplift_orchestrator.py",
+      "line": 381,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "tests/test_uplift_orchestrator.py",
+      "line": 422,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "tests/test_uplift_orchestrator.py",
+      "line": 509,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "tests/test_uplift_orchestrator.py",
+      "line": 601,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "tests/test_uplift_orchestrator.py",
+      "line": 893,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "tests/test_uplift_orchestrator.py",
+      "line": 897,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "tests/test_uplift_orchestrator.py",
+      "line": 910,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "tests/test_uplift_orchestrator.py",
+      "line": 951,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "tests/test_uplift_orchestrator.py",
+      "line": 960,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "src/uplift/analyst.py",
+      "line": 53,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "src/uplift/migrator.py",
+      "line": 323,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "src/uplift/verifier.py",
+      "line": 48,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "src/uplift/verifier.py",
+      "line": 73,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "src/uplift/verifier.py",
+      "line": 75,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "tests/test_models.py",
+      "line": 58,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "tests/test_uplift_orchestrator.py",
+      "line": 74,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "tests/test_uplift_orchestrator.py",
+      "line": 75,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "tests/test_uplift_orchestrator.py",
+      "line": 256,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "tests/test_uplift_orchestrator.py",
+      "line": 356,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "tests/test_uplift_orchestrator.py",
+      "line": 374,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "tests/test_uplift_orchestrator.py",
+      "line": 381,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "tests/test_uplift_orchestrator.py",
+      "line": 422,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "tests/test_uplift_orchestrator.py",
+      "line": 509,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "tests/test_uplift_orchestrator.py",
+      "line": 601,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "tests/test_uplift_orchestrator.py",
+      "line": 893,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "tests/test_uplift_orchestrator.py",
+      "line": 897,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "tests/test_uplift_orchestrator.py",
+      "line": 910,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "tests/test_uplift_orchestrator.py",
+      "line": 951,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
+    },
+    {
+      "bc_id": "BC-006",
+      "file": "tests/test_uplift_orchestrator.py",
+      "line": 960,
+      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
+      "status": "auto-applied",
+      "applied": false,
+      "needs_human_review": true
     }
   ],
   "test_runs": [
-    { "attempt": 1, "passed": false, "failure_count": 1 },
-    { "attempt": 2, "passed": true,  "failure_count": 0 }
+    {
+      "attempt": 1,
+      "passed": true,
+      "failure_count": 0
+    }
   ],
   "final_status": "green"
 }
