@@ -146,7 +146,36 @@ python dashboard/server.py
 | Predicted test failures auto-fixed | — | **1 (BC-006 `TypeError` → `ValidationError`)** |
 | Final test suite | Broken until fixed | **86 / 86 green on attempt 2** |
 
-## 7. Roadmap: library-agnostic by design
+## 7. Granite-powered analyst (`--llm`)
+
+The built-in analyst knows the six pydantic breaking changes up front — fast
+and repeatable, but only for a guide whose changes are already known. With
+`--llm`, an **IBM Granite model on watsonx.ai** reads the guide and *discovers*
+the breaking changes and their detection patterns itself:
+
+```bash
+python -m uplift upgrade pydantic --force --llm
+```
+
+The division of labour is deliberate: the model reads prose and proposes
+patterns; every downstream stage — scanning, patching, verifying — stays
+deterministic, and the model never edits code. Proposed regexes are compiled
+before use and discarded if invalid, so a hallucinated pattern cannot reach
+the scanner.
+
+If credentials, the SDK, or the response are unusable the run prints the
+reason and continues on the built-in parser rather than failing:
+
+```
+[analyst] Granite unavailable (watsonx.ai: Provided API key is disabled.); using built-in parser
+[analyst] extracted 6 breaking changes
+```
+
+**Status:** the fallback path is verified end-to-end; the live Granite path is
+covered by mocked unit tests but has not yet been run against watsonx (the
+hackathon API key is currently disabled pending rotation).
+
+## 8. Roadmap: library-agnostic by design
 
 Nothing in the pipeline is pydantic-specific: the analyst reads *any*
 human-written migration guide, the scanner matches *any* detection hints, and
@@ -154,7 +183,8 @@ the migrators apply *any* old→new pattern pairs. The same recipe-free flow
 applies directly to the next migrations teams dread — **SQLAlchemy 1.x→2.0**,
 **NumPy 1→2**, **Django major upgrades** — by dropping the library's own
 migration guide into `docs/` and running `python -m uplift upgrade <library>
---force`. One agent crew, every upgrade.
+--force --llm`, where Granite supplies the breaking-change list for a library
+UpLift has never seen. One agent crew, every upgrade.
 
 ## Setup
 

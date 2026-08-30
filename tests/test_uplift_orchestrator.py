@@ -112,7 +112,7 @@ class TestCLI:
         from uplift.__main__ import main
         with patch("uplift.__main__.upgrade", return_value=True) as mock_up:
             rc = main(["upgrade", "pydantic"])
-        mock_up.assert_called_once_with("pydantic", force=False)
+        mock_up.assert_called_once_with("pydantic", force=False, llm=False)
         assert rc == 0
 
     def test_upgrade_failure_returns_1(self):
@@ -1038,14 +1038,14 @@ class TestForceFlag:
         from uplift.__main__ import main
         with patch("uplift.__main__.upgrade", return_value=True) as mock_up:
             rc = main(["upgrade", "pydantic", "--force"])
-        mock_up.assert_called_once_with("pydantic", force=True)
+        mock_up.assert_called_once_with("pydantic", force=True, llm=False)
         assert rc == 0
 
     def test_no_force_flag_calls_upgrade_with_force_false(self):
         from uplift.__main__ import main
         with patch("uplift.__main__.upgrade", return_value=True) as mock_up:
             rc = main(["upgrade", "pydantic"])
-        mock_up.assert_called_once_with("pydantic", force=False)
+        mock_up.assert_called_once_with("pydantic", force=False, llm=False)
         assert rc == 0
 
     def test_force_bypasses_cached_breaking_changes(self, tmp_path):

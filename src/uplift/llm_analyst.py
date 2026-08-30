@@ -72,6 +72,20 @@ class GraniteUnavailable(RuntimeError):
     """Raised when watsonx.ai cannot be reached or is not configured."""
 
 
+def _concise_reason(exc: Exception) -> str:
+    """Turn a verbose SDK error into one readable line.
+
+    watsonx errors embed a JSON blob with request ids and timestamps; the only
+    part worth printing during a migration is the message itself.
+    """
+    text = str(exc)
+    match = re.search(r'"errorMessage"\s*:\s*"([^"]+)"', text)
+    if match:
+        return f"watsonx.ai: {match.group(1)}"
+    text = " ".join(text.split())
+    return f"watsonx.ai call failed: {text[:120]}" + ("…" if len(text) > 120 else "")
+
+
 def missing_credentials() -> list[str]:
     """Return the names of any required environment variables that are unset."""
     return [name for name in _REQUIRED_ENV if not os.environ.get(name)]
@@ -152,26 +166,31 @@ def extract_breaking_changes_llm(
 
     guide_text = Path(guide_path).read_text(encoding="utf-8")
 
-    client = APIClient(
-        Credentials(
-            url=os.environ["WATSONX_URL"],
-            api_key=os.environ["WATSONX_APIKEY"],
-        )
-    )
-    model = ModelInference(
-        model_id=model_id,
-        api_client=client,
-        project_id=os.environ["WATSONX_PROJECT_ID"],
-        params={
-            Params.MAX_NEW_TOKENS: max_new_tokens,
-            Params.TEMPERATURE: 0.0,
-            Params.DECODING_METHOD: "greedy",
-        },
-    )
-
+    # APIClient authenticates inside its constructor, so client creation is as
+    # much a failure point as the call itself (a disabled or rotated key raises
+    # here). Both must degrade to the deterministic analyst, never crash the
+    # migration.
     try:
+        client = APIClient(
+            Credentials(
+                url=os.environ["WATSONX_URL"],
+                api_key=os.environ["WATSONX_APIKEY"],
+            )
+        )
+        model = ModelInference(
+            model_id=model_id,
+            api_client=client,
+            project_id=os.environ["WATSONX_PROJECT_ID"],
+            params={
+                Params.MAX_NEW_TOKENS: max_new_tokens,
+                Params.TEMPERATURE: 0.0,
+                Params.DECODING_METHOD: "greedy",
+            },
+        )
         response = model.generate_text(prompt=_PROMPT.format(guide=guide_text))
-    except Exception as exc:  # pragma: no cover - network failure path
-        raise GraniteUnavailable(f"watsonx.ai call failed: {exc}") from exc
+    except GraniteUnavailable:
+        raise
+    except Exception as exc:
+        raise GraniteUnavailable(_concise_reason(exc)) from exc
 
     return _validate(_extract_json_array(response))

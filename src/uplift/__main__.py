@@ -35,6 +35,18 @@ def build_parser() -> argparse.ArgumentParser:
             "see the full document→code pipeline execute end-to-end."
         ),
     )
+    upgrade_parser.add_argument(
+        "--llm",
+        action="store_true",
+        default=False,
+        help=(
+            "Have an IBM Granite model on watsonx.ai read the migration guide "
+            "and discover the breaking changes, instead of the built-in parser. "
+            "Lets UpLift handle a library it has no built-in knowledge of. "
+            "Requires WATSONX_APIKEY, WATSONX_PROJECT_ID and WATSONX_URL; falls "
+            "back to the built-in parser if unavailable."
+        ),
+    )
     return parser
 
 
@@ -55,7 +67,8 @@ def main(argv: list[str] | None = None) -> int:
             )
             return 2
         force: bool = getattr(args, "force", False)
-        success = upgrade(args.library, force=force)
+        llm: bool = getattr(args, "llm", False)
+        success = upgrade(args.library, force=force, llm=llm)
         return 0 if success else 1
 
     parser.print_help()

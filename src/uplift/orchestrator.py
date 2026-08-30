@@ -41,12 +41,19 @@ SELF_EXCLUDE = [SELF_PACKAGE_ROOT, TEST_ROOT / "test_uplift_orchestrator.py"]
 # Stage helpers
 # ---------------------------------------------------------------------------
 
-def run_changelog_analyst(force: bool = False) -> list[dict[str, Any]]:
+def run_changelog_analyst(
+    force: bool = False, llm: bool = False
+) -> list[dict[str, Any]]:
     """Parse migration guide and write breaking-changes.json.
 
     If the file already exists (pre-populated by a Bob mode run) it is read
     directly — unless *force* is True, in which case it is always regenerated
     from docs/migration-guide.md so judges see the live document→code pipeline.
+
+    With *llm* True the extraction is done by an IBM Granite model on
+    watsonx.ai, which lets UpLift read a guide for a library it has no built-in
+    knowledge of. Any failure (no credentials, no SDK, unusable response) falls
+    back to the deterministic parser rather than aborting the migration.
     """
     if BREAKING_CHANGES_PATH.exists() and not force:
         with BREAKING_CHANGES_PATH.open() as fh:
@@ -58,7 +65,21 @@ def run_changelog_analyst(force: bool = False) -> list[dict[str, Any]]:
             "Run the changelog-analyst Bob mode first, or provide docs/migration-guide.md."
         )
 
-    bc_list = extract_breaking_changes(MIGRATION_GUIDE_PATH)
+    bc_list = None
+    if llm:
+        from uplift.llm_analyst import (
+            GraniteUnavailable,
+            extract_breaking_changes_llm,
+        )
+
+        try:
+            bc_list = extract_breaking_changes_llm(MIGRATION_GUIDE_PATH)
+            print(f"[analyst] Granite (watsonx.ai) read the guide directly")
+        except GraniteUnavailable as exc:
+            print(f"[analyst] Granite unavailable ({exc}); using built-in parser")
+
+    if bc_list is None:
+        bc_list = extract_breaking_changes(MIGRATION_GUIDE_PATH)
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     with BREAKING_CHANGES_PATH.open("w") as fh:
         json.dump(bc_list, fh, indent=2)
@@ -153,7 +174,7 @@ def run_verifier(
 # Top-level coordinator
 # ---------------------------------------------------------------------------
 
-def upgrade(library: str, force: bool = False) -> bool:
+def upgrade(library: str, force: bool = False, llm: bool = False) -> bool:
     """Drive the full migration pipeline for *library*.
 
     Args:
@@ -178,7 +199,7 @@ def upgrade(library: str, force: bool = False) -> bool:
             _p.write_bytes(_data)
 
     # Stage 1 — changelog analyst
-    bc_list = run_changelog_analyst(force=force)
+    bc_list = run_changelog_analyst(force=force, llm=llm)
 
     # Stage 2 — usage scanner
     usage_map = run_usage_scanner(bc_list, force=force)
