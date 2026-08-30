@@ -164,6 +164,19 @@ def upgrade(library: str, force: bool = False) -> bool:
     """
     print(f"[uplift] Starting upgrade: {library}" + (" (--force)" if force else ""))
 
+    # --force regenerates the analyst/scanner artifacts in place. Snapshot them
+    # so a no-op run on an already-migrated repo can put them back instead of
+    # leaving behind an empty scan.
+    _snapshots: dict[Path, bytes] = {}
+    if force:
+        for _p in (BREAKING_CHANGES_PATH, USAGE_MAP_PATH):
+            if _p.exists():
+                _snapshots[_p] = _p.read_bytes()
+
+    def _restore_snapshots() -> None:
+        for _p, _data in _snapshots.items():
+            _p.write_bytes(_data)
+
     # Stage 1 — changelog analyst
     bc_list = run_changelog_analyst(force=force)
 
@@ -191,9 +204,10 @@ def upgrade(library: str, force: bool = False) -> bool:
     # migrated. Writing now would replace a real report with an empty one, so
     # stop before Stage 5 and leave the existing artifact alone.
     if not any(c.get("applied") for c in changes) and UPGRADE_REPORT_PATH.exists():
+        _restore_snapshots()
         print(
             f"[uplift] Nothing to migrate — {library} usage is already on the "
-            f"target version. Left {UPGRADE_REPORT_PATH} untouched."
+            "target version. Existing reports left untouched."
         )
         return True
 

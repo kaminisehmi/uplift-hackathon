@@ -516,13 +516,13 @@
       <div class="agent-card" style="--ac:#f59e0b">
         <div class="agent-num">01</div>
         <div class="agent-name">changelog-analyst</div>
-        <div class="agent-desc">Reads <code>docs/migration-guide.md</code> via Granite — extracts 6 structured breaking changes with detection hints</div>
+        <div class="agent-desc">Reads <code>docs/migration-guide.md</code> — extracts 6 structured breaking changes with detection hints (Granite summarisation available via <code>orchestrate/granite_summarizer.py</code>)</div>
         <div class="agent-out">→ breaking-changes.json</div>
       </div>
       <div class="agent-card" style="--ac:#38bdf8">
         <div class="agent-num">02</div>
         <div class="agent-name">usage-scanner</div>
-        <div class="agent-desc">Scans every <code>.py</code> file in <code>src/</code> and <code>tests/</code> matching each detection hint — maps 15 usage sites</div>
+        <div class="agent-desc">Scans every <code>.py</code> file in <code>src/</code> and <code>tests/</code> matching each detection hint — maps every affected usage site</div>
         <div class="agent-out">→ usage-map.json</div>
       </div>
       <div class="agent-card" style="--ac:#a855f7">
@@ -541,12 +541,12 @@
         <div class="agent-num">04</div>
         <div class="agent-name">verifier</div>
         <div class="agent-desc">Runs <code>pytest</code>, maps failures to BC IDs, auto-fixes BC-006 <code>TypeError→ValidationError</code>, retries until green</div>
-        <div class="agent-out">→ 77/77 green</div>
+        <div class="agent-out">→ all tests green</div>
       </div>
       <div class="agent-card" style="--ac:#06b6d4">
         <div class="agent-num">05</div>
         <div class="agent-name">Orchestrate agent</div>
-        <div class="agent-desc">IBM watsonx Orchestrate reads the upgrade report via Granite and requires engineering manager <strong>approve / reject</strong></div>
+        <div class="agent-desc">IBM watsonx Orchestrate summarises the upgrade report and requires engineering manager <strong>approve / reject</strong></div>
         <div class="agent-out">→ human gate</div>
       </div>
     </div>
@@ -604,7 +604,7 @@
     <div class="section-title">Live Migration Runner</div>
     <div class="runner-card">
       <h3>⚡ Run full pipeline from scratch</h3>
-      <p>Executes <code>python -m uplift upgrade pydantic --force</code> — reads the migration guide live via Granite, scans all usage sites, runs both migrators in parallel, and verifies with pytest. Every stage streams below in real-time.</p>
+      <p>Executes <code>python -m uplift upgrade pydantic --force</code> — reads the migration guide live, scans all usage sites, runs both migrators in parallel, and verifies with pytest. Every stage streams below in real-time.</p>
       <button class="migrate-btn" id="migrate-btn" onclick="runMigration()">⚡ Run migration (--force)</button>
     </div>
     <div class="terminal-wrap" id="terminal-wrap">
@@ -684,6 +684,22 @@ function switchTab(name, btn) {
 // ── fetch helpers ──────────────────────────────────────────────────────────
 const api = path => fetch(path).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
 
+// Live test count, filled from /api/run-tests so the UI never states a stale
+// number. Falls back to the neutral label until the real count arrives.
+let TEST_LABEL = 'test suite';
+let USAGE_SITES = '—';
+let BC_COUNT = '—';
+let TEST_BADGE = 'GREEN';
+function refreshTestCount() {
+  return api('/api/run-tests').then(t => {
+    const m = /(\d+)\s+passed/.exec((t.summary || '').replace(/\[[0-9;]*m/g, ''));
+    if (m) {
+      TEST_LABEL = `${m[1]} / ${m[1]} tests`;
+      TEST_BADGE = `${m[1]}/${m[1]} GREEN`;
+    }
+  }).catch(() => {});
+}
+
 // ── BC id → colour ─────────────────────────────────────────────────────────
 const bcColour = id => {
   const map = { 'BC-001':'#f59e0b','BC-002':'#818cf8','BC-003':'#10d98a','BC-004':'#38bdf8','BC-005':'#a855f7','BC-006':'#f43f5e' };
@@ -701,18 +717,18 @@ function buildOverview(report) {
       <span class="icon">🏆</span>
       <div class="label">Final Status</div>
       <div class="value ${statusColor}">${isGreen ? 'GREEN' : 'FAIL'}</div>
-      <div class="sub">77 / 77 tests</div>
+      <div class="sub">${TEST_LABEL}</div>
     </div>
     <div class="stat-card" style="--card-accent:linear-gradient(90deg,#2563eb,#38bdf8)">
       <span class="icon">🔬</span>
       <div class="label">Breaking Changes</div>
-      <div class="value c-blue">6</div>
+      <div class="value c-blue">${BC_COUNT}</div>
       <div class="sub">BC-001 – BC-006</div>
     </div>
     <div class="stat-card" style="--card-accent:linear-gradient(90deg,#7c3aed,#a855f7)">
       <span class="icon">📍</span>
       <div class="label">Usage Sites</div>
-      <div class="value c-purple">15</div>
+      <div class="value c-purple">${USAGE_SITES}</div>
       <div class="sub">across src/ + tests/</div>
     </div>
     <div class="stat-card" style="--card-accent:linear-gradient(90deg,#d97706,#f59e0b)">
@@ -736,7 +752,7 @@ function buildOverview(report) {
   `;
 
   const badge = document.getElementById('header-badge');
-  badge.textContent = isGreen ? '77/77 GREEN' : 'FAILED';
+  badge.textContent = isGreen ? TEST_BADGE : 'FAILED';
   badge.className = 'badge-pill' + (isGreen ? '' : ' red');
 
   const attemptsHtml = report.test_runs.map(r => `
@@ -745,7 +761,7 @@ function buildOverview(report) {
       <div class="attempt-label">
         <strong>Attempt ${r.attempt}</strong> —
         ${r.passed
-          ? '<span class="chip-green">PASSED</span> &nbsp;77 / 77 tests'
+          ? `<span class="chip-green">PASSED</span> &nbsp;${TEST_LABEL}`
           : `<span class="chip-red">FAILED</span> &nbsp;${r.failure_count} failure${r.failure_count !== 1 ? 's' : ''} · BC-006 <code>TypeError → ValidationError</code> auto-fixed`}
       </div>
     </div>
@@ -779,6 +795,7 @@ function buildBreaking(bcs) {
         <span class="bc-card-conf">confidence ≥ ${Math.round(bc.confidence_required * 100)}%</span>
       </div>
       <div class="bc-card-desc">${bc.description}</div>
+      ${(bc.old_pattern || bc.new_pattern) ? `
       <div class="bc-patterns">
         <div class="bc-pattern old">
           <div class="bc-pattern-label old">v1 — old</div>
@@ -789,7 +806,8 @@ function buildBreaking(bcs) {
           <div class="bc-pattern-label new">v2 — new</div>
           <code>${escHtml(bc.new_pattern)}</code>
         </div>
-      </div>
+      </div>` : `
+      <div class="bc-hint">Behavioural change — no direct code substitution; detected and flagged for human review.</div>`}
       <div class="bc-hint">Detection: <code>${escHtml(bc.detection_hint)}</code></div>
     </div>
   `).join('');
@@ -951,7 +969,10 @@ Promise.all([
   api('/api/breaking-changes'),
   api('/api/usage-map'),
   api('/api/upgrade-report-md'),
+  refreshTestCount(),
 ]).then(([report, bcs, usageMap, md]) => {
+  USAGE_SITES = Object.values(usageMap).reduce((n, s) => n + s.length, 0);
+  BC_COUNT = (Array.isArray(bcs) ? bcs : (bcs.breaking_changes || [])).length;
   buildOverview(report);
   buildBreaking(bcs);
   buildUsage(usageMap);

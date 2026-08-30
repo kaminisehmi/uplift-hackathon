@@ -7,11 +7,11 @@ settings = AppSettings()
 
 
 def load_order(payload: dict) -> Order:
-    return Order.parse_obj(payload)
+    return Order.model_validate(payload)
 
 
 def load_order_json(raw: str) -> Order:
-    return Order.parse_raw(raw)
+    return Order.model_validate_json(raw)
 
 
 def order_subtotal(order: Order) -> float:
@@ -24,11 +24,11 @@ def order_total(order: Order) -> float:
 
 
 def apply_discount(order: Order, amount: float) -> Order:
-    return order.copy(update={"discount": amount})
+    return order.model_copy(update={"discount": amount})
 
 
 def order_summary(order: Order) -> dict:
-    data = order.dict()
+    data = order.model_dump()
     return {
         "order_id": data["order_id"],
         "customer_email": data["customer"]["email"],
@@ -39,11 +39,11 @@ def order_summary(order: Order) -> dict:
 
 
 def export_order(order: Order) -> str:
-    return order.json()
+    return order.model_dump_json()
 
 
 def order_schema() -> dict:
-    return Order.schema()
+    return Order.model_json_schema()
 
 
 def top_skus(orders: List[Order], limit: int = 3) -> List[str]:
