@@ -55,5 +55,5 @@ def test_discount_cannot_exceed_subtotal():
 
 def test_order_items_are_immutable():
     order = make_order()
-    with pytest.raises(ValidationError):
+    with pytest.raises(TypeError):
         order.items[0].quantity = 99
