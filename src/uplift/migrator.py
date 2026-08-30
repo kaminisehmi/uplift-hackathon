@@ -249,6 +249,12 @@ def apply_migrations(
             if usage["file"] in assigned_files:
                 files_to_patch.add(usage["file"])
 
+    # Human-readable change descriptions come from the analyst's own titles,
+    # so the report says what changed rather than repeating the BC id.
+    _bc_titles = {
+        bc["id"]: bc.get("title", "") for bc in bc_list if bc.get("title")
+    }
+
     # Apply transformations file by file
     for file_path in sorted(files_to_patch):
         path = Path(file_path)
@@ -287,7 +293,9 @@ def apply_migrations(
                                 "bc_id": bc_id,
                                 "file": file_path,
                                 "line": usage["line"],
-                                "description": f"Applied {bc_id} transformation",
+                                "description": _bc_titles.get(
+                                    bc_id, f"Applied {bc_id} transformation"
+                                ),
                                 "applied": True,
                             }
                         )

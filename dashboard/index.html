@@ -522,7 +522,7 @@
       <div class="agent-card" style="--ac:#38bdf8">
         <div class="agent-num">02</div>
         <div class="agent-name">usage-scanner</div>
-        <div class="agent-desc">Scans every <code>.py</code> file in <code>src/</code> and <code>tests/</code> matching each detection hint — maps 15 usage sites</div>
+        <div class="agent-desc">Scans every <code>.py</code> file in <code>src/</code> and <code>tests/</code> matching each detection hint — maps every affected usage site</div>
         <div class="agent-out">→ usage-map.json</div>
       </div>
       <div class="agent-card" style="--ac:#a855f7">
@@ -687,6 +687,8 @@ const api = path => fetch(path).then(r => { if (!r.ok) throw new Error(r.status)
 // Live test count, filled from /api/run-tests so the UI never states a stale
 // number. Falls back to the neutral label until the real count arrives.
 let TEST_LABEL = 'test suite';
+let USAGE_SITES = '—';
+let BC_COUNT = '—';
 let TEST_BADGE = 'GREEN';
 function refreshTestCount() {
   return api('/api/run-tests').then(t => {
@@ -720,13 +722,13 @@ function buildOverview(report) {
     <div class="stat-card" style="--card-accent:linear-gradient(90deg,#2563eb,#38bdf8)">
       <span class="icon">🔬</span>
       <div class="label">Breaking Changes</div>
-      <div class="value c-blue">6</div>
+      <div class="value c-blue">${BC_COUNT}</div>
       <div class="sub">BC-001 – BC-006</div>
     </div>
     <div class="stat-card" style="--card-accent:linear-gradient(90deg,#7c3aed,#a855f7)">
       <span class="icon">📍</span>
       <div class="label">Usage Sites</div>
-      <div class="value c-purple">15</div>
+      <div class="value c-purple">${USAGE_SITES}</div>
       <div class="sub">across src/ + tests/</div>
     </div>
     <div class="stat-card" style="--card-accent:linear-gradient(90deg,#d97706,#f59e0b)">
@@ -793,6 +795,7 @@ function buildBreaking(bcs) {
         <span class="bc-card-conf">confidence ≥ ${Math.round(bc.confidence_required * 100)}%</span>
       </div>
       <div class="bc-card-desc">${bc.description}</div>
+      ${(bc.old_pattern || bc.new_pattern) ? `
       <div class="bc-patterns">
         <div class="bc-pattern old">
           <div class="bc-pattern-label old">v1 — old</div>
@@ -803,7 +806,8 @@ function buildBreaking(bcs) {
           <div class="bc-pattern-label new">v2 — new</div>
           <code>${escHtml(bc.new_pattern)}</code>
         </div>
-      </div>
+      </div>` : `
+      <div class="bc-hint">Behavioural change — no direct code substitution; detected and flagged for human review.</div>`}
       <div class="bc-hint">Detection: <code>${escHtml(bc.detection_hint)}</code></div>
     </div>
   `).join('');
@@ -967,6 +971,8 @@ Promise.all([
   api('/api/upgrade-report-md'),
   refreshTestCount(),
 ]).then(([report, bcs, usageMap, md]) => {
+  USAGE_SITES = Object.values(usageMap).reduce((n, s) => n + s.length, 0);
+  BC_COUNT = (Array.isArray(bcs) ? bcs : (bcs.breaking_changes || [])).length;
   buildOverview(report);
   buildBreaking(bcs);
   buildUsage(usageMap);

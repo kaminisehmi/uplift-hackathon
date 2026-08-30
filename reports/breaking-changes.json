@@ -4,8 +4,8 @@
     "title": "BaseSettings moved to pydantic-settings",
     "description": "`from pydantic import BaseSettings` raises `PydanticImportError` in v2. Settings management now lives in the `pydantic-settings` package:",
     "detection_hint": "from pydantic import BaseSettings",
-    "old_pattern": "# v1\nfrom pydantic import BaseSettings\n\n# v2\nfrom pydantic_settings import BaseSettings, SettingsConfigDict",
-    "new_pattern": "",
+    "old_pattern": "# v1\nfrom pydantic import BaseSettings",
+    "new_pattern": "# v2\nfrom pydantic_settings import BaseSettings, SettingsConfigDict",
     "confidence_required": 0.95
   },
   {
@@ -13,8 +13,8 @@
     "title": "Validators renamed (@validator / @root_validator)",
     "description": "- `@validator(\"field\")` \u2192 `@field_validator(\"field\")` (import `field_validator`). Validators must be classmethods; add `@classmethod` under the decorator. - `@root_validator` \u2192 `@model_validator(mode=\"before\")` or `@model_validator(mode=\"after\")`. The bare v1 form `@root_validator` (post validation, no arguments) raises an error at class-definition time in v2. - `mode=\"after\"` validators receive and return the model instance (`self`), not a `values` dict. - `mode=\"before\"` validators receive the raw input data.",
     "detection_hint": "@validator|@root_validator",
-    "old_pattern": "",
-    "new_pattern": "",
+    "old_pattern": "@validator(\"field\")\n@root_validator",
+    "new_pattern": "@field_validator(\"field\")\n@model_validator(mode=\"before\")",
     "confidence_required": 0.95
   },
   {
@@ -22,8 +22,8 @@
     "title": "class Config \u2192 model_config / ConfigDict",
     "description": "The inner `class Config` is replaced by a `model_config = ConfigDict(...)` class attribute (import `ConfigDict` from `pydantic`). Renamed options:",
     "detection_hint": "class Config:",
-    "old_pattern": "",
-    "new_pattern": "",
+    "old_pattern": "allow_mutation = False\norm_mode = True\nallow_population_by_field_name\nmax_anystr_length",
+    "new_pattern": "frozen = True\nfrom_attributes = True\npopulate_by_name\nstr_max_length",
     "confidence_required": 0.95
   },
   {
@@ -31,8 +31,8 @@
     "title": "Field keyword renames (regex\u2192pattern, min_items\u2192min_length)",
     "description": "Removed keyword arguments raise `PydanticUserError` at class-definition time:",
     "detection_hint": "regex=|min_items=|max_items=|const=",
-    "old_pattern": "",
-    "new_pattern": "",
+    "old_pattern": "regex=\nmin_items=\nmax_items=\nconst=...\nunique_items",
+    "new_pattern": "pattern=\nmin_length=\nmax_length=\nuse `Literal[...]` type\nremoved (use validators or `Set` types)",
     "confidence_required": 0.95
   },
   {
@@ -40,8 +40,8 @@
     "title": "Renamed model methods (.dict, .json, .copy, .schema, .parse_obj, .parse_raw)",
     "description": "The v1 methods still exist in v2 but emit `PydanticDeprecatedSince20` warnings and will be removed; migrate to the new names:",
     "detection_hint": "\\.(dict|json|copy|schema|parse_obj|parse_raw)\\(",
-    "old_pattern": "",
-    "new_pattern": "",
+    "old_pattern": "Model.parse_obj(d)\nModel.parse_raw(s)\nm.dict()\nm.json()\nm.copy(update=...)\nModel.schema()\nModel.construct()\nm.__fields__",
+    "new_pattern": "Model.model_validate(d)\nModel.model_validate_json(s)\nm.model_dump()\nm.model_dump_json()\nm.model_copy(update=...)\nModel.model_json_schema()\nModel.model_construct()\nModel.model_fields",
     "confidence_required": 0.95
   },
   {
