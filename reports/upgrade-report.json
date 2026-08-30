@@ -2,8 +2,112 @@
   "target": "pydantic",
   "from_version": "1.x",
   "to_version": "2.x",
-  "files_modified": [],
-  "changes": [],
+  "files_modified": [
+    "requirements.txt",
+    "src/uplift_demo/models.py",
+    "src/uplift_demo/service.py",
+    "src/uplift_demo/settings.py"
+  ],
+  "changes": [
+    {
+      "bc_id": "BC-002",
+      "file": "src/uplift_demo/models.py",
+      "line": 12,
+      "description": "Applied BC-002 transformation",
+      "applied": true
+    },
+    {
+      "bc_id": "BC-002",
+      "file": "src/uplift_demo/models.py",
+      "line": 33,
+      "description": "Applied BC-002 transformation",
+      "applied": true
+    },
+    {
+      "bc_id": "BC-002",
+      "file": "src/uplift_demo/models.py",
+      "line": 39,
+      "description": "Applied BC-002 transformation",
+      "applied": true
+    },
+    {
+      "bc_id": "BC-003",
+      "file": "src/uplift_demo/models.py",
+      "line": 22,
+      "description": "Applied BC-003 transformation",
+      "applied": true
+    },
+    {
+      "bc_id": "BC-004",
+      "file": "src/uplift_demo/models.py",
+      "line": 9,
+      "description": "Applied BC-004 transformation",
+      "applied": true
+    },
+    {
+      "bc_id": "BC-004",
+      "file": "src/uplift_demo/models.py",
+      "line": 29,
+      "description": "Applied BC-004 transformation",
+      "applied": true
+    },
+    {
+      "bc_id": "BC-005",
+      "file": "src/uplift_demo/service.py",
+      "line": 10,
+      "description": "Applied BC-005 transformation",
+      "applied": true
+    },
+    {
+      "bc_id": "BC-005",
+      "file": "src/uplift_demo/service.py",
+      "line": 14,
+      "description": "Applied BC-005 transformation",
+      "applied": true
+    },
+    {
+      "bc_id": "BC-005",
+      "file": "src/uplift_demo/service.py",
+      "line": 27,
+      "description": "Applied BC-005 transformation",
+      "applied": true
+    },
+    {
+      "bc_id": "BC-005",
+      "file": "src/uplift_demo/service.py",
+      "line": 31,
+      "description": "Applied BC-005 transformation",
+      "applied": true
+    },
+    {
+      "bc_id": "BC-005",
+      "file": "src/uplift_demo/service.py",
+      "line": 42,
+      "description": "Applied BC-005 transformation",
+      "applied": true
+    },
+    {
+      "bc_id": "BC-005",
+      "file": "src/uplift_demo/service.py",
+      "line": 46,
+      "description": "Applied BC-005 transformation",
+      "applied": true
+    },
+    {
+      "bc_id": "BC-001",
+      "file": "src/uplift_demo/settings.py",
+      "line": 1,
+      "description": "Applied BC-001 transformation",
+      "applied": true
+    },
+    {
+      "bc_id": "BC-001",
+      "file": "requirements.txt",
+      "line": 1,
+      "description": "Updated pydantic version constraint and added pydantic-settings",
+      "applied": true
+    }
+  ],
   "needs_human_review": [
     {
       "bc_id": "BC-006",
@@ -27,6 +131,11 @@
   "test_runs": [
     {
       "attempt": 1,
+      "passed": false,
+      "failure_count": 1
+    },
+    {
+      "attempt": 2,
       "passed": true,
       "failure_count": 0
     }
