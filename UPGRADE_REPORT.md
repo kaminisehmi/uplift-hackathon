@@ -16,19 +16,19 @@
 
 | BC ID | File | Line | Description |
 |-------|------|------|-------------|
-| BC-002 | `src/uplift_demo/models.py` | 12 | Applied BC-002 transformation |
-| BC-002 | `src/uplift_demo/models.py` | 33 | Applied BC-002 transformation |
-| BC-002 | `src/uplift_demo/models.py` | 39 | Applied BC-002 transformation |
-| BC-003 | `src/uplift_demo/models.py` | 22 | Applied BC-003 transformation |
-| BC-004 | `src/uplift_demo/models.py` | 9 | Applied BC-004 transformation |
-| BC-004 | `src/uplift_demo/models.py` | 29 | Applied BC-004 transformation |
-| BC-005 | `src/uplift_demo/service.py` | 10 | Applied BC-005 transformation |
-| BC-005 | `src/uplift_demo/service.py` | 14 | Applied BC-005 transformation |
-| BC-005 | `src/uplift_demo/service.py` | 27 | Applied BC-005 transformation |
-| BC-005 | `src/uplift_demo/service.py` | 31 | Applied BC-005 transformation |
-| BC-005 | `src/uplift_demo/service.py` | 42 | Applied BC-005 transformation |
-| BC-005 | `src/uplift_demo/service.py` | 46 | Applied BC-005 transformation |
-| BC-001 | `src/uplift_demo/settings.py` | 1 | Applied BC-001 transformation |
+| BC-002 | `src/uplift_demo/models.py` | 12 | Validators renamed (@validator / @root_validator) |
+| BC-002 | `src/uplift_demo/models.py` | 33 | Validators renamed (@validator / @root_validator) |
+| BC-002 | `src/uplift_demo/models.py` | 39 | Validators renamed (@validator / @root_validator) |
+| BC-003 | `src/uplift_demo/models.py` | 22 | class Config → model_config / ConfigDict |
+| BC-004 | `src/uplift_demo/models.py` | 9 | Field keyword renames (regex→pattern, min_items→min_length) |
+| BC-004 | `src/uplift_demo/models.py` | 29 | Field keyword renames (regex→pattern, min_items→min_length) |
+| BC-005 | `src/uplift_demo/service.py` | 10 | Renamed model methods (.dict, .json, .copy, .schema, .parse_obj, .parse_raw) |
+| BC-005 | `src/uplift_demo/service.py` | 14 | Renamed model methods (.dict, .json, .copy, .schema, .parse_obj, .parse_raw) |
+| BC-005 | `src/uplift_demo/service.py` | 27 | Renamed model methods (.dict, .json, .copy, .schema, .parse_obj, .parse_raw) |
+| BC-005 | `src/uplift_demo/service.py` | 31 | Renamed model methods (.dict, .json, .copy, .schema, .parse_obj, .parse_raw) |
+| BC-005 | `src/uplift_demo/service.py` | 42 | Renamed model methods (.dict, .json, .copy, .schema, .parse_obj, .parse_raw) |
+| BC-005 | `src/uplift_demo/service.py` | 46 | Renamed model methods (.dict, .json, .copy, .schema, .parse_obj, .parse_raw) |
+| BC-001 | `src/uplift_demo/settings.py` | 1 | BaseSettings moved to pydantic-settings |
 | BC-001 | `requirements.txt` | 1 | Updated pydantic version constraint and added pydantic-settings |
 
 ## Test Run History
