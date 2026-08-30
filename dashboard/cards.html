@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>UpLift — video caption cards</title>
+<style>
+  :root{
+    --bg:#070b14; --fg:#e8ecf4; --muted:#7c8aa8;
+    --accent:#818cf8; --green:#10d98a; --purple:#a855f7; --cyan:#22d3ee;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--bg); color:var(--fg);
+    font-family:-apple-system,"Inter","Segoe UI",system-ui,sans-serif;
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden; cursor:none;
+    background-image:
+      radial-gradient(ellipse 70% 50% at 50% -10%, rgba(99,102,241,.18), transparent 60%),
+      radial-gradient(ellipse 40% 40% at 85% 100%, rgba(168,85,247,.10), transparent 55%);
+  }
+  .card{display:none; width:min(1500px,92vw); text-align:center; animation:in .45s ease}
+  .card.on{display:block}
+  @keyframes in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .kicker{
+    font-size:clamp(15px,1.5vw,22px); letter-spacing:.42em; text-transform:uppercase;
+    color:var(--accent); font-weight:700; margin-bottom:2.2rem;
+  }
+  h1{font-size:clamp(44px,6.4vw,104px); line-height:1.03; letter-spacing:-.035em; font-weight:800}
+  h1 .hi{background:linear-gradient(120deg,var(--accent),var(--purple) 55%,var(--cyan));
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent}
+  p.sub{margin-top:2.2rem; font-size:clamp(21px,2.3vw,38px); color:var(--muted); line-height:1.5}
+  ul{margin:2.6rem auto 0; max-width:1050px; text-align:left; list-style:none}
+  li{font-size:clamp(19px,2vw,33px); line-height:1.85; color:#c8d2e6; display:flex; gap:1.1rem}
+  li b{color:var(--fg)}
+  li::before{content:"▸"; color:var(--green); font-weight:700}
+  .big{font-size:clamp(60px,9vw,150px); font-weight:800; color:var(--green); letter-spacing:-.04em}
+  .row{display:flex; gap:clamp(24px,5vw,90px); justify-content:center; margin-top:2.6rem; flex-wrap:wrap}
+  .stat .n{font-size:clamp(40px,5.4vw,86px); font-weight:800; letter-spacing:-.03em}
+  .stat .l{font-size:clamp(13px,1.2vw,18px); letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-top:.5rem}
+  .n1{color:var(--accent)} .n2{color:var(--purple)} .n3{color:var(--cyan)} .n4{color:var(--green)}
+  .hint{position:fixed; bottom:26px; left:0; right:0; text-align:center;
+    font-size:14px; color:#33405c; letter-spacing:.16em; text-transform:uppercase}
+  .num{position:fixed; top:26px; right:34px; font-size:14px; color:#33405c; letter-spacing:.2em}
+</style>
+</head>
+<body>
+
+<div class="card on">
+  <div class="kicker">IBM TechXchange 2026 · Dev Day Hackathon</div>
+  <h1>Dependabot tells you<br>you're outdated.<br><span class="hi">UpLift makes you current.</span></h1>
+  <p class="sub">An agent crew that performs major dependency upgrades —<br>built with IBM Bob, watsonx.ai and watsonx Orchestrate</p>
+</div>
+
+<div class="card">
+  <div class="kicker">The problem</div>
+  <h1>Upgrades get <span class="hi">deferred for months</span></h1>
+  <ul>
+    <li><b>Dependabot bumps the version.</b> The build explodes. The PR rots.</li>
+    <li><b>Days of manual work</b> per service to fix the breaking changes.</li>
+    <li>So known-vulnerable versions <b>stay in production</b>.</li>
+    <li>pydantic v1→v2 changes <b>six API surfaces at once</b>.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <div class="kicker">Built by an agent crew in IBM Bob</div>
+  <h1>Four custom modes,<br><span class="hi">locked to their own files</span></h1>
+  <ul>
+    <li><b>changelog-analyst</b> — reads the migration guide, docs only</li>
+    <li><b>usage-scanner</b> — read-only, maps every affected line</li>
+    <li><b>code-migrator ×2</b> — run <b>in parallel</b>, cannot touch tests/</li>
+    <li><b>verifier</b> — runs pytest, fixes, retries until green</li>
+  </ul>
+  <p class="sub" style="margin-top:2rem">11 Bob tasks · 40 Bobcoins · every receipt committed in <b>bob_sessions/</b></p>
+</div>
+
+<div class="card">
+  <div class="kicker">What the run produced</div>
+  <div class="row">
+    <div class="stat"><div class="n n1">6</div><div class="l">breaking changes</div></div>
+    <div class="stat"><div class="n n2">15</div><div class="l">usage sites</div></div>
+    <div class="stat"><div class="n n3">4</div><div class="l">files patched</div></div>
+    <div class="stat"><div class="n n4">86/86</div><div class="l">tests green</div></div>
+  </div>
+  <p class="sub">Exactly <b>one</b> test failure — the behavioural change the analyst<br>predicted at the start. Fixed, and flagged for human review.</p>
+</div>
+
+<div class="card">
+  <div class="kicker">IBM watsonx</div>
+  <h1><span class="hi">The agent recommends.<br>A human releases.</span></h1>
+  <ul>
+    <li><b>watsonx Orchestrate</b> — Upgrade Approval Agent demands an explicit approve / reject before merge</li>
+    <li><b>watsonx.ai Granite</b> — reads the migration guide for a library UpLift has never seen</li>
+    <li>The model reads prose. <b>Every stage that touches code stays deterministic.</b></li>
+  </ul>
+</div>
+
+<div class="card">
+  <div class="kicker">Why it's different</div>
+  <ul>
+    <li><b>Dependabot / Renovate</b> — bump the version, never fix the code</li>
+    <li><b>OpenRewrite</b> — fixes code, but needs a hand-written recipe per library</li>
+    <li><b>AWS DevOps Agent</b> — ops-side, after deployment</li>
+    <li><b>UpLift</b> — reads the guide the library already published. Pre-merge, in the IDE. No recipe.</li>
+  </ul>
+  <p class="sub" style="margin-top:2.4rem">SQLAlchemy 1→2 · NumPy 1→2 · Django — same crew, different guide.</p>
+</div>
+
+<div class="card">
+  <h1>Days of dreaded migration work,<br><span class="hi">down to one command.</span></h1>
+  <p class="sub" style="margin-top:3rem">github.com/kaminisehmi/uplift-hackathon</p>
+</div>
+
+<div class="num"></div>
+<div class="hint">← → to move · F for fullscreen</div>
+
+<script>
+  const cards=[...document.querySelectorAll('.card')];
+  let i=0;
+  const num=document.querySelector('.num');
+  const show=n=>{cards[i].classList.remove('on');i=(n+cards.length)%cards.length;
+    cards[i].classList.add('on');num.textContent=`${i+1} / ${cards.length}`;};
+  show(0);
+  addEventListener('keydown',e=>{
+    if(['ArrowRight',' ','Enter','PageDown'].includes(e.key)){e.preventDefault();show(i+1);}
+    if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(i-1);}
+    if(e.key==='f'||e.key==='F'){document.documentElement.requestFullscreen?.();}
+  });
+  addEventListener('click',()=>show(i+1));
+</script>
+</body>
+</html>

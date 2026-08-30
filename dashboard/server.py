@@ -71,6 +71,11 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self) -> None:
         path = self.path.split("?")[0]
 
+        if path == "/cards.html":
+            self._send(200, "text/html; charset=utf-8",
+                       (STATIC / "cards.html").read_bytes())
+            return
+
         if path in ("/", "/index.html"):
             html_file = STATIC / "index.html"
             self._send(200, "text/html; charset=utf-8", html_file.read_bytes())
