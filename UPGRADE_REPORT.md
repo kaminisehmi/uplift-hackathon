@@ -7,62 +7,43 @@
 
 ## Files Modified
 
+- `requirements.txt`
+- `src/uplift_demo/models.py`
+- `src/uplift_demo/service.py`
+- `src/uplift_demo/settings.py`
 
 ## Breaking Changes Applied
 
 | BC ID | File | Line | Description |
 |-------|------|------|-------------|
+| BC-002 | `src/uplift_demo/models.py` | 12 | Applied BC-002 transformation |
+| BC-002 | `src/uplift_demo/models.py` | 33 | Applied BC-002 transformation |
+| BC-002 | `src/uplift_demo/models.py` | 39 | Applied BC-002 transformation |
+| BC-003 | `src/uplift_demo/models.py` | 22 | Applied BC-003 transformation |
+| BC-004 | `src/uplift_demo/models.py` | 9 | Applied BC-004 transformation |
+| BC-004 | `src/uplift_demo/models.py` | 29 | Applied BC-004 transformation |
+| BC-005 | `src/uplift_demo/service.py` | 10 | Applied BC-005 transformation |
+| BC-005 | `src/uplift_demo/service.py` | 14 | Applied BC-005 transformation |
+| BC-005 | `src/uplift_demo/service.py` | 27 | Applied BC-005 transformation |
+| BC-005 | `src/uplift_demo/service.py` | 31 | Applied BC-005 transformation |
+| BC-005 | `src/uplift_demo/service.py` | 42 | Applied BC-005 transformation |
+| BC-005 | `src/uplift_demo/service.py` | 46 | Applied BC-005 transformation |
+| BC-001 | `src/uplift_demo/settings.py` | 1 | Applied BC-001 transformation |
+| BC-001 | `requirements.txt` | 1 | Updated pydantic version constraint and added pydantic-settings |
 
 ## Test Run History
 
 | Attempt | Passed | Failures |
 |---------|--------|----------|
-| 1 | ✅ | 0 |
+| 1 | ❌ | 1 |
+| 2 | ✅ | 0 |
 
 ## Needs Human Review
 
 | BC ID | File | Line | Reason | Status |
 |-------|------|------|--------|--------|
-| BC-006 | `src/uplift/analyst.py` | 53 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `src/uplift/migrator.py` | 323 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `src/uplift/verifier.py` | 48 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `src/uplift/verifier.py` | 73 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `src/uplift/verifier.py` | 75 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
 | BC-006 | `tests/test_models.py` | 58 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `tests/test_uplift_orchestrator.py` | 74 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `tests/test_uplift_orchestrator.py` | 75 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `tests/test_uplift_orchestrator.py` | 256 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `tests/test_uplift_orchestrator.py` | 356 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `tests/test_uplift_orchestrator.py` | 374 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `tests/test_uplift_orchestrator.py` | 381 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `tests/test_uplift_orchestrator.py` | 422 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `tests/test_uplift_orchestrator.py` | 509 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `tests/test_uplift_orchestrator.py` | 601 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `tests/test_uplift_orchestrator.py` | 893 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `tests/test_uplift_orchestrator.py` | 897 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `tests/test_uplift_orchestrator.py` | 910 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `tests/test_uplift_orchestrator.py` | 951 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `tests/test_uplift_orchestrator.py` | 960 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `src/uplift/analyst.py` | 53 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `src/uplift/migrator.py` | 323 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `src/uplift/verifier.py` | 48 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `src/uplift/verifier.py` | 73 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `src/uplift/verifier.py` | 75 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
 | BC-006 | `tests/test_models.py` | 58 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `tests/test_uplift_orchestrator.py` | 74 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `tests/test_uplift_orchestrator.py` | 75 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `tests/test_uplift_orchestrator.py` | 256 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `tests/test_uplift_orchestrator.py` | 356 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `tests/test_uplift_orchestrator.py` | 374 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `tests/test_uplift_orchestrator.py` | 381 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `tests/test_uplift_orchestrator.py` | 422 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `tests/test_uplift_orchestrator.py` | 509 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `tests/test_uplift_orchestrator.py` | 601 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `tests/test_uplift_orchestrator.py` | 893 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `tests/test_uplift_orchestrator.py` | 897 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `tests/test_uplift_orchestrator.py` | 910 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `tests/test_uplift_orchestrator.py` | 951 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `tests/test_uplift_orchestrator.py` | 960 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
 
 ---
 

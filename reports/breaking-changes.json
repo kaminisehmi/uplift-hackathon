@@ -39,7 +39,7 @@
     "id": "BC-005",
     "title": "Renamed model methods (.dict, .json, .copy, .schema, .parse_obj, .parse_raw)",
     "description": "The v1 methods still exist in v2 but emit `PydanticDeprecatedSince20` warnings and will be removed; migrate to the new names:",
-    "detection_hint": "\\.(dict|json|copy|schema)\\(\\)|\\.parse_obj\\(|\\.parse_raw\\(",
+    "detection_hint": "\\.(dict|json|copy|schema|parse_obj|parse_raw)\\(",
     "old_pattern": "",
     "new_pattern": "",
     "confidence_required": 0.95

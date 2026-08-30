@@ -50,7 +50,7 @@ flowchart TD
     MB["code-migrator B\nsettings.py + service.py\n+ requirements.txt"]
 
     VF["verifier\npytest loop · BC-006 fix"]
-    UR[UPGRADE_REPORT.md\n77/77 green]
+    UR[UPGRADE_REPORT.md\n86/86 green]
 
     WO["watsonx Orchestrate\nUpgrade Approval Agent\nhuman approve / reject"]
     WX["watsonx.ai\nIBM Granite (granite-4-h-small)\nsummarizer"]
@@ -91,7 +91,7 @@ git checkout demo-v1-state
 python3.12 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 pip install -e .                          # installs the uplift CLI
-python -m pytest                          # → 77 passed  ✅
+python -m pytest                          # → 86 passed  ✅
 
 # ── STEP 2: the "Dependabot moment" ─────────────────────────────────────────
 pip install "pydantic>=2" pydantic-settings
@@ -106,14 +106,14 @@ python -m uplift upgrade pydantic --force
 #   [uplift] Starting upgrade: pydantic (--force)
 #   [analyst] extracted 6 breaking changes       ← read the migration guide
 #   [scanner] found 15 usage sites               ← scanned src/ + tests/
-#   [migrator-A] Applied N changes               ← models.py (parallel)
-#   [migrator-B] Applied N changes               ← settings.py + service.py
+#   [migrator-A] Applied 7 changes               ← models.py (parallel)
+#   [migrator-B] Applied 9 changes               ← settings.py + service.py
 #   [verifier] Attempt 1: FAILED (1 failures)
 #   [verifier] Attempt 2: PASSED                 ← BC-006 TypeError→ValidationError auto-fixed
 #   [uplift] Migration complete — all tests green.
 
 # ── STEP 4: verify ───────────────────────────────────────────────────────────
-python -m pytest                          # → 77 passed, 0 failed  ✅
+python -m pytest                          # → 86 passed, 0 failed  ✅
 
 # ── STEP 5: inspect the report ───────────────────────────────────────────────
 cat UPGRADE_REPORT.md
@@ -141,7 +141,7 @@ python dashboard/server.py
 | Usage sites found across `src/` + `tests/` | Manual grep | **15 sites found automatically** |
 | Source files patched | Manual edits | **4 files patched in parallel by 2 migrators** |
 | Predicted test failures auto-fixed | — | **1 (BC-006 `TypeError` → `ValidationError`)** |
-| Final test suite | Broken until fixed | **77 / 77 green on attempt 2** |
+| Final test suite | Broken until fixed | **86 / 86 green on attempt 2** |
 
 ## 7. Roadmap: library-agnostic by design
 
