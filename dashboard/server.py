@@ -5,6 +5,7 @@ Serves the reports/ JSON and a static HTML dashboard on http://localhost:7890
 from __future__ import annotations
 
 import json
+import re
 import os
 import subprocess
 import sys
@@ -26,17 +27,22 @@ def _json(path: Path) -> object:
         return json.load(f)
 
 
+_ANSI_RE = re.compile(r"\x1b\[[0-9;]*[a-zA-Z]")
+
+
 def _run_tests() -> dict:
     """Run pytest and return a result dict (non-blocking, max 30 s)."""
     try:
         result = subprocess.run(
-            [sys.executable, "-m", "pytest", "--tb=no", "-q"],
+            [sys.executable, "-m", "pytest", "--tb=no", "-q", "--color=no"],
             capture_output=True,
             text=True,
             cwd=str(ROOT),
             timeout=30,
         )
-        last_line = result.stdout.strip().splitlines()[-1] if result.stdout.strip() else ""
+        # Strip any ANSI colour codes so the dashboard shows plain text.
+        clean = _ANSI_RE.sub("", result.stdout).strip()
+        last_line = clean.splitlines()[-1] if clean else ""
         return {
             "returncode": result.returncode,
             "summary": last_line,
