@@ -43,8 +43,9 @@ cat UPGRADE_REPORT.md       # point at the needs_human_review table
 
 ## 1:55 — How it was built (this is the IBM Bob slide)
 
-> "The whole system was built *by* an agent crew in IBM Bob, in one day, for
-> eleven of my forty Bobcoins. Four custom Bob modes with file-restricted
+> "The whole system was built *by* an agent crew in IBM Bob, in one day —
+> the migration crew itself cost under six Bobcoins, and the complete
+> submission used my full forty. Four custom Bob modes with file-restricted
 > permissions — the migrator literally *cannot* touch the test directory.
 > Plan mode designed it, subagents explored it, two migrator tasks ran in
 > parallel, and every task's cost receipt is committed in the repo.
@@ -79,5 +80,7 @@ cat UPGRADE_REPORT.md       # point at the needs_human_review table
   (ibm/granite-3-3-8b-instruct) only; credentials from env vars; nothing
   hardcoded; hackathon account only.
 - **"How much Bob did you really use?"** — bob_sessions/ has one costed
-  export per task: 11 tasks, ≈10.9 Bobcoins, including the parallel
-  migrator pair with overlapping timestamps.
+  export per task: 11 tasks totalling 40.1 Bobcoins — the entire
+  allocation, itemized, including the parallel migrator pair with
+  overlapping timestamps. The migration crew (tasks 0–4e) was 5.9 of those;
+  the rest went to the orchestrator, dashboard and watsonx integration.

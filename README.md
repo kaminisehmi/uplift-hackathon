@@ -21,7 +21,10 @@ Bots like Dependabot and Renovate only bump the version number; the broken
 build is left to a human engineer.
 
 **UpLift's agent crew performed this entire migration end-to-end in under an
-hour of agent time for under 7 Bobcoins.**
+hour of agent time for under 6 Bobcoins.** The complete submission — agent
+crew, orchestrator CLI, live dashboard and watsonx integration — used the
+full 40-Bobcoin hackathon allocation, itemized per task in
+[`bob_sessions/`](bob_sessions/).
 
 ## 2. Market validation & differentiation
 
@@ -133,7 +136,7 @@ python dashboard/server.py
 
 | Metric | Manual (typical) | UpLift |
 |---|---|---|
-| pydantic v1→v2 migration for this service | ~1–2 days per service | **< 1 hour agent time, < 7 Bobcoins to build; CLI replays it in < 1 second per repo** |
+| pydantic v1→v2 migration for this service | ~1–2 days per service | **< 1 hour agent time, 5.9 Bobcoins for the migration crew; CLI replays it in < 1 second per repo** |
 | Breaking changes extracted from migration guide | Manual reading | **6 / 6 extracted (BC-001 – BC-006)** |
 | Usage sites found across `src/` + `tests/` | Manual grep | **15 sites found automatically** |
 | Source files patched | Manual edits | **4 files patched in parallel by 2 migrators** |
