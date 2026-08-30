@@ -55,5 +55,5 @@ def test_discount_cannot_exceed_subtotal():
 
 def test_order_items_are_immutable():
     order = make_order()
-    with pytest.raises(ValidationError):  # BC-006: frozen=True raises ValidationError in pydantic v2 (was TypeError in v1)
+    with pytest.raises(TypeError):
         order.items[0].quantity = 99
