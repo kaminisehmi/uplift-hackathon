@@ -174,9 +174,18 @@ def upgrade(library: str, force: bool = False) -> bool:
     changes = run_code_migrators(usage_map, bc_list)
 
     # Collect needs_human_review items (BC-006 or low-confidence)
-    needs_human_review: list[dict[str, Any]] = [
-        c for c in changes if c.get("needs_human_review")
-    ]
+    # Both migrators can flag the same site, so de-duplicate by (bc, file, line)
+    # to keep the report's review list one row per real item.
+    needs_human_review: list[dict[str, Any]] = []
+    _seen_review: set[tuple[Any, Any, Any]] = set()
+    for c in changes:
+        if not c.get("needs_human_review"):
+            continue
+        key = (c.get("bc_id"), c.get("file"), c.get("line"))
+        if key in _seen_review:
+            continue
+        _seen_review.add(key)
+        needs_human_review.append(c)
 
     # Nothing was applied and a report already exists: the target is already
     # migrated. Writing now would replace a real report with an empty one, so

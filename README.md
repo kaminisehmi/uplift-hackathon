@@ -109,8 +109,8 @@ python -m uplift upgrade pydantic --force
 #   [uplift] Starting upgrade: pydantic (--force)
 #   [analyst] extracted 6 breaking changes       ← read the migration guide
 #   [scanner] found 15 usage sites               ← scanned src/ + tests/
-#   [migrator-A] Applied 7 changes               ← models.py (parallel)
-#   [migrator-B] Applied 9 changes               ← settings.py + service.py
+#   [migrator-A] Applied 6 changes (1 flagged for human review)   ← models.py
+#   [migrator-B] Applied 8 changes (1 flagged for human review)   ← settings.py + service.py
 #   [verifier] Attempt 1: FAILED (1 failures)
 #   [verifier] Attempt 2: PASSED                 ← BC-006 TypeError→ValidationError auto-fixed
 #   [uplift] Migration complete — all tests green.
@@ -142,7 +142,7 @@ python dashboard/server.py
 | pydantic v1→v2 migration for this service | ~1–2 days per service | **< 1 hour agent time, 5.9 Bobcoins for the migration crew; CLI replays it in < 1 second per repo** |
 | Breaking changes extracted from migration guide | Manual reading | **6 / 6 extracted (BC-001 – BC-006)** |
 | Usage sites found across `src/` + `tests/` | Manual grep | **15 sites found automatically** |
-| Source files patched | Manual edits | **4 files patched in parallel by 2 migrators** |
+| Source files patched | Manual edits | **4 files, 14 edits, applied in parallel by 2 migrators** |
 | Predicted test failures auto-fixed | — | **1 (BC-006 `TypeError` → `ValidationError`)** |
 | Final test suite | Broken until fixed | **86 / 86 green on attempt 2** |
 
