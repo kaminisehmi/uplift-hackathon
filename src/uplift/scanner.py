@@ -13,15 +13,31 @@ from typing import Any
 _SKIP_EXTENSIONS = {".pyc", ".pyo", ".so", ".pyd"}
 
 
+def _is_excluded(path: Path, exclude: list[Path]) -> bool:
+    """True if *path* lives inside (or is) any entry of *exclude*."""
+    resolved = path.resolve()
+    for entry in exclude:
+        entry = Path(entry).resolve()
+        if resolved == entry or entry in resolved.parents:
+            return True
+    return False
+
+
 def scan_usages(
     bc_list: list[dict[str, Any]],
     root_dirs: list[Path],
+    exclude: list[Path] | None = None,
 ) -> dict[str, list[dict[str, Any]]]:
     """For each breaking change in *bc_list*, find all matching lines in *root_dirs*.
+
+    *exclude* lists files/directories to skip. UpLift's own source contains the
+    v1 API patterns as string literals, so it must be excluded or the tool will
+    "migrate" itself and corrupt its own pipeline.
 
     Returns a dict keyed by bc_id, each value a list of
     ``{"file": str, "line": int, "snippet": str}``.
     """
+    exclude = list(exclude or [])
     # Compile patterns once
     compiled: list[tuple[str, re.Pattern[str]]] = []
     for bc in bc_list:
@@ -41,6 +57,8 @@ def scan_usages(
             continue
         for path in sorted(root.rglob("*.py")):
             if any(path.suffix == ext for ext in _SKIP_EXTENSIONS):
+                continue
+            if exclude and _is_excluded(path, exclude):
                 continue
             try:
                 lines = path.read_text(encoding="utf-8").splitlines()
