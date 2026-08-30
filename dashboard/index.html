@@ -964,13 +964,38 @@ function escHtml(s) {
 }
 
 // ── bootstrap ─────────────────────────────────────────────────────────────
+// A repo that has not been migrated yet has no upgrade report. That is a
+// first-run state, not an error — invite the run instead of showing a stack.
+function showNotRunYet() {
+  document.getElementById('tab-overview').innerHTML = `
+    <div style="text-align:center;padding:70px 24px;">
+      <div style="font-size:56px;margin-bottom:20px;">🚀</div>
+      <div style="font-size:26px;font-weight:800;letter-spacing:-.5px;">No migration has run yet</div>
+      <div style="color:var(--muted);margin-top:14px;font-size:15px;line-height:1.7;">
+        This repository is still on the old major version.<br>
+        Run the pipeline to read the migration guide and upgrade it.
+      </div>
+      <button class="migrate-btn" id="migrate-btn" style="margin-top:32px;" onclick="runMigration()">
+        ⚡ Run migration (--force)
+      </button>
+      <div class="terminal-wrap" id="terminal-wrap" style="margin-top:34px;text-align:left;">
+        <div class="terminal-header">
+          <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
+          <div class="terminal-title">uplift upgrade pydantic --force</div>
+        </div>
+        <div class="terminal-panel" id="terminal-panel"></div>
+      </div>
+    </div>`;
+}
+
 Promise.all([
-  api('/api/upgrade-report'),
-  api('/api/breaking-changes'),
-  api('/api/usage-map'),
-  api('/api/upgrade-report-md'),
+  api('/api/upgrade-report').catch(() => null),
+  api('/api/breaking-changes').catch(() => []),
+  api('/api/usage-map').catch(() => ({})),
+  api('/api/upgrade-report-md').catch(() => ({markdown: ''})),
   refreshTestCount(),
 ]).then(([report, bcs, usageMap, md]) => {
+  if (!report) { showNotRunYet(); return; }
   USAGE_SITES = Object.values(usageMap).reduce((n, s) => n + s.length, 0);
   BC_COUNT = (Array.isArray(bcs) ? bcs : (bcs.breaking_changes || [])).length;
   buildOverview(report);

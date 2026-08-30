@@ -90,7 +90,8 @@ class Handler(BaseHTTPRequestHandler):
             self._json_response(_json(REPORTS / "usage-map.json"))
 
         elif path == "/api/upgrade-report-md":
-            md = (ROOT / "UPGRADE_REPORT.md").read_text()
+            report_md = ROOT / "UPGRADE_REPORT.md"
+            md = report_md.read_text() if report_md.exists() else ""
             self._json_response({"markdown": md})
 
         elif path == "/api/run-tests":
