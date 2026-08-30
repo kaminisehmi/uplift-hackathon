@@ -43,7 +43,6 @@
 | BC ID | File | Line | Reason | Status |
 |-------|------|------|--------|--------|
 | BC-006 | `tests/test_models.py` | 58 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
-| BC-006 | `tests/test_models.py` | 58 | Behavioral change: TypeError → ValidationError (frozen model) | auto-applied |
 
 ---
 

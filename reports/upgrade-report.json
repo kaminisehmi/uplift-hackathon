@@ -117,15 +117,6 @@
       "status": "auto-applied",
       "applied": false,
       "needs_human_review": true
-    },
-    {
-      "bc_id": "BC-006",
-      "file": "tests/test_models.py",
-      "line": 58,
-      "reason": "Behavioral change: TypeError \u2192 ValidationError (frozen model)",
-      "status": "auto-applied",
-      "applied": false,
-      "needs_human_review": true
     }
   ],
   "test_runs": [
